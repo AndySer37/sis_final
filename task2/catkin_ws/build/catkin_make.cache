@@ -1,0 +1,2 @@
+pose_estimation
+-DCATKIN_DEVEL_PREFIX=/home/seanlai-laptop/sis_final/task2/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/seanlai-laptop/sis_final/task2/catkin_ws/install -G Unix Makefiles
