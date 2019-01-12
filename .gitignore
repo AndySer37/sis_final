@@ -1,4 +1,6 @@
 *.pkl
+*.jpg
+*.png
 model/
 score/
 .ipynb_checkpoints/
