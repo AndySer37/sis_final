@@ -1,3 +1,4 @@
 *.pkl
 model/
 score/
+.ipynb_checkpoints/
