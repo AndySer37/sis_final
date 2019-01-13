@@ -6,12 +6,9 @@ import torch.optim as optim
 import torchvision
 from torchvision import models
 from torchvision.models.vgg import VGG
-import scipy.misc
 import random
 import sys
 
-if '/opt/ros/kinetic/lib/python2.7/dist-packages' in sys.path:
-    sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
 
 from torch.optim import lr_scheduler
