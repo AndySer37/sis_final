@@ -16,8 +16,8 @@ ret_code="$(command -v nvidia-docker)"
 if [ -z "$ret_code" ]
 then
     printf "${RED}\"nvidia-docker\" is not found, so substitute docker. $NC\n"
-    docker run -it --rm -v /home/$USER:/hosthome -p 8888:8888 -w ${goal_dir} argnctu/sis_base_image:v4
+    docker run -it --rm --name sr300 --net host --privileged -v /dev/bus/usb:/dev/bus/usb -v /home/$USER:/hosthome -p 8888:8888 -w ${goal_dir} argnctu/sis_base_image:v4 bash
 else
     printf "Run \"nvidia-docker\"\n"
-    nvidia-docker run -it --rm -v /home/$USER:/hosthome -p 8888:8888 -w ${goal_dir} argnctu/sis_base_image:v4
+    docker run -it --rm --name sr300 --net host --privileged -v /dev/bus/usb:/dev/bus/usb -v /home/$USER:/hosthome -p 8888:8888 -w ${goal_dir} argnctu/sis_base_image:v4 bash
 fi
