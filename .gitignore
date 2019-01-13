@@ -1,6 +1,9 @@
 *.pkl
+*.pth
 *.jpg
 *.png
-model/
+build/
+devel/
+models/
 score/
 .ipynb_checkpoints/

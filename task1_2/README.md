@@ -2,8 +2,6 @@
 
 ## How to run
 
-gdown --id 1I8m8o0a9fqeLQz09__tclsQaG4ea8uDL
+gdown --id 1THE1UHXECQRe1kaK6EC9DXwPnS6qmbr3
 
-source docker_run.sh
-
-source jupyter_no_broswer.sh
+python task1_2.py
