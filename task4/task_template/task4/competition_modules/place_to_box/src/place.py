@@ -99,7 +99,7 @@ class place_node(object):
 		return homeResponse("Home now!")		
 
 	def onShutdown(self):
-		self.loginfo("Shutdown.")
+		rospy.loginfo("Shutdown.")
 
 if __name__ == '__main__': 
 	rospy.init_node('place_node',anonymous=False)
