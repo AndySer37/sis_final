@@ -39,6 +39,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "object_detection/task1out.h"
+#include "pose_estimation/pose_estimation.h"
 
 using namespace pcl;
 using namespace std;
@@ -76,4 +77,5 @@ class pose_estimation{
     void point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud);
     void point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c);
     void point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclustered_cloud);
+    void pose_estimation::serviceCb()
 };
