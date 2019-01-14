@@ -124,18 +124,30 @@ class task1_2(object):
 		self.means = np.array([103.939, 116.779, 123.68]) / 255. # mean of three channels in the order of BGR
 		self.h, self.w  = 480, 640
 		self.n_class = 4
-		model_dir = "/home/andyser/Desktop/models"
-		model_name = "sis_99epoch.pth"
+		model_dir = "/home/andyser/code/sis/sis_final/task1_2/models"   # 
+		model_name = "sis_99epoch.pkl"
 		self.vgg_model = VGGNet(self.cfg, requires_grad=True, remove_fc=True)
 		self.fcn_model = FCN16s(pretrained_net=self.vgg_model, n_class=self.n_class)
-		state_dict = torch.load(os.path.join(model_dir, model_name), map_location='cpu')
+
+		use_gpu = torch.cuda.is_available()
+		num_gpu = list(range(torch.cuda.device_count()))
+		rospy.loginfo("Cuda available: %s", use_gpu)
+
+		if use_gpu:
+			ts = time.time()
+			self.vgg_model = self.vgg_model.cuda()
+			self.fcn_model = self.fcn_model.cuda()
+			self.fcn_model = nn.DataParallel(self.fcn_model, device_ids=num_gpu)
+			print("Finish cuda loading, time elapsed {}".format(time.time() - ts))
+		state_dict = torch.load(os.path.join(model_dir, model_name))
 		self.fcn_model.load_state_dict(state_dict)
 		
-
+		self.mask1 = np.zeros((self.h, self.w))
 		self.MAXAREA = 18000
 		self.MINAREA = 1000
 		self.brand = ['doublemint', 'kinder', 'kusan']
 		rospy.loginfo("Service ready!")
+
 
 	def prediction_cb(self, req):
 		resp = task1outResponse()
@@ -164,26 +176,26 @@ class task1_2(object):
 		output = output.data.cpu().numpy()
 
 		N, _, h, w = output.shape
-		pred = output.transpose(0, 2, 3, 1).reshape(-1, self.n_class).argmax(axis = 1).reshape(N, h, w)
+		mask = output.transpose(0, 2, 3, 1).reshape(-1, self.n_class).argmax(axis = 1).reshape(N, h, w)[0]
 
-		img = img.numpy()
-		mask = pred[0]
 
 		rospy.loginfo("Predict time : %f", rospy.get_time() - now)
 		now = rospy.get_time()
 
 		show_img = np.asarray(origin)
 		count = np.zeros(3)
-		labels = self.adj(mask)
+		self.mask1[:,:] = 0
+		self.mask1[mask != 0] = 1
+		labels = self.adj(self.mask1)
 		mask = np.asarray(mask, np.uint8)
 		mask2 = np.zeros((h, w))
 		for i in range(1, self.n_class):
-			mask1 = np.zeros((h, w))
-			mask1[mask == i] = 1
-			mask1 = np.asarray(mask1, np.uint8)
-			mask1 = cv2.GaussianBlur(mask1, (5, 5), 0)
+			self.mask1[:,:] = 0
+			self.mask1[mask == i] = 1
+			self.mask1 = np.asarray(self.mask1, np.uint8)
+			self.mask1 = cv2.GaussianBlur(self.mask1, (5, 5), 0)
 
-			cnts = cv2.findContours(mask1.copy(), cv2.RETR_CCOMP  ,cv2.CHAIN_APPROX_SIMPLE)
+			cnts = cv2.findContours(self.mask1.copy(), cv2.RETR_CCOMP  ,cv2.CHAIN_APPROX_SIMPLE)
 			cnts = cnts[1]
 			sd = ShapeDetector()
 			for c in cnts:
@@ -211,7 +223,8 @@ class task1_2(object):
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(show_img, "bgr8")
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1") 
 		print(count)
-		return resp
+
+		#return resp
 
 	def adj(self, _img, _level = 8):
 		colomn, row = self.h, self.w
@@ -225,25 +238,35 @@ class task1_2(object):
 				    _count += 1
 				while len(_pixel_pair) != 0:
 					pair = _pixel_pair.pop()
-					if _img[pair[0],pair[1] + 1] == 1 and label[pair[0],pair[1] + 1] == 0:
-					    _pixel_pair.append([pair[0],pair[1] + 1])
-					if _img[pair[0],pair[1] - 1] == 1 and label[pair[0],pair[1] - 1] == 0:
-					    _pixel_pair.append([pair[0],pair[1] - 1])
-					if _img[pair[0] + 1,pair[1]] == 1 and label[pair[0] + 1,pair[1]] == 0:
-					    _pixel_pair.append([pair[0] + 1,pair[1]])
-					if _img[pair[0] - 1,pair[1]] == 1 and label[pair[0] - 1,pair[1]] == 0:
-					    _pixel_pair.append([pair[0] - 1,pair[1]])
+					a = pair[1] + 1
+					b = pair[1] - 1
+					c = pair[0] + 1
+					d = pair[0] - 1
+					if a == 640 : a -= 1
+					if b == -1  : b += 1
+					if c == 480 : c -= 1
+					if d == -1  : d += 1
+
+					if _img[pair[0],a] == 1 and label[pair[0],a] == 0:
+					    _pixel_pair.append([pair[0],a])
+					if _img[pair[0],b] == 1 and label[pair[0],b] == 0:
+					    _pixel_pair.append([pair[0],b])
+					if _img[c,pair[1]] == 1 and label[c,pair[1]] == 0:
+					    _pixel_pair.append([c,pair[1]])
+					if _img[d,pair[1]] == 1 and label[d,pair[1]] == 0:
+					    _pixel_pair.append([d,pair[1]])
 					if _level == 8:
-						if _img[pair[0] + 1,pair[1] + 1] == 1 and label[pair[0] + 1,pair[1] + 1] == 0:
-							_pixel_pair.append([pair[0] + 1,pair[1] + 1])
-						if _img[pair[0] - 1,pair[1] + 1] == 1 and label[pair[0] - 1,pair[1] + 1] == 0:
-							_pixel_pair.append([pair[0] - 1,pair[1] + 1])
-						if _img[pair[0] - 1,pair[1] - 1] == 1 and label[pair[0] - 1,pair[1] - 1] == 0:
-							_pixel_pair.append([pair[0] - 1,pair[1] - 1])
-						if _img[pair[0] + 1,pair[1] - 1] == 1 and label[pair[0] + 1,pair[1] - 1] == 0:
-							_pixel_pair.append([pair[0] + 1,pair[1] - 1])
+						if _img[c,a] == 1 and label[c,a] == 0:
+							_pixel_pair.append([c,a])
+						if _img[d,a] == 1 and label[d,a] == 0:
+							_pixel_pair.append([d,a])
+						if _img[d,b] == 1 and label[d,b] == 0:
+							_pixel_pair.append([d,b])
+						if _img[c,b] == 1 and label[c,b] == 0:
+							_pixel_pair.append([c,b])
 					label[pair[0],pair[1]] = _count
-		print("Num of classes : ", _count)
+
+		print("Num of classes for connected components : ", _count)
 		return label
 
 	def onShutdown(self):
