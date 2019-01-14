@@ -117,7 +117,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/seanlai-laptop/sis_final/task2/catkin_ws/build/gtest/cmake_install.cmake")
-  include("/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/cmake_install.cmake")
+  include("/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimate_and_pick/cmake_install.cmake")
 
 endif()
 

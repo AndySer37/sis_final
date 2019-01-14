@@ -1,8 +1,0 @@
-prefix=/home/seanlai-laptop/sis_final/task2/catkin_ws/install
-
-Name: task2
-Description: Description of task2
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/seanlai-laptop/sis_final/task2/catkin_ws/install/lib 
-Requires: 

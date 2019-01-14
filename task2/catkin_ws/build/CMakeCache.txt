@@ -377,6 +377,12 @@ pcl_ros_DIR:PATH=/opt/ros/kinetic/share/pcl_ros/cmake
 //The directory containing a CMake configuration file for pluginlib.
 pluginlib_DIR:PATH=/opt/ros/kinetic/share/pluginlib/cmake
 
+//Value Computed by CMake
+pose_estimate_and_pick_BINARY_DIR:STATIC=/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimate_and_pick
+
+//Value Computed by CMake
+pose_estimate_and_pick_SOURCE_DIR:STATIC=/home/seanlai-laptop/sis_final/task2/catkin_ws/src/pose_estimate_and_pick
+
 //The directory containing a CMake configuration file for rosbag.
 rosbag_DIR:PATH=/opt/ros/kinetic/share/rosbag/cmake
 
@@ -427,12 +433,6 @@ std_msgs_DIR:PATH=/opt/ros/kinetic/share/std_msgs/cmake
 
 //The directory containing a CMake configuration file for std_srvs.
 std_srvs_DIR:PATH=/opt/ros/kinetic/share/std_srvs/cmake
-
-//Value Computed by CMake
-task2_BINARY_DIR:STATIC=/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation
-
-//Value Computed by CMake
-task2_SOURCE_DIR:STATIC=/home/seanlai-laptop/sis_final/task2/catkin_ws/src/pose_estimation
 
 //The directory containing a CMake configuration file for tf2.
 tf2_DIR:PATH=/opt/ros/kinetic/share/tf2/cmake

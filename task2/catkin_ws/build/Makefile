@@ -292,7 +292,7 @@ tf2_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 tf2_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build
 .PHONY : tf2_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -305,7 +305,7 @@ tf2_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 tf2_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build
 .PHONY : tf2_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -318,7 +318,7 @@ actionlib_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build
 .PHONY : actionlib_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -331,7 +331,7 @@ actionlib_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
 .PHONY : actionlib_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -344,7 +344,7 @@ actionlib_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/actionlib_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_py.dir/build
 .PHONY : actionlib_generate_messages_py/fast
 
 #=============================================================================
@@ -357,7 +357,7 @@ actionlib_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build
 .PHONY : actionlib_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -370,7 +370,7 @@ actionlib_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/actionlib_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_lisp.dir/build
 .PHONY : actionlib_generate_messages_lisp/fast
 
 #=============================================================================
@@ -383,7 +383,7 @@ actionlib_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/actionlib_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_eus.dir/build
 .PHONY : actionlib_generate_messages_eus/fast
 
 #=============================================================================
@@ -396,7 +396,7 @@ tf_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 tf_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/tf_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/tf_generate_messages_py.dir/build
 .PHONY : tf_generate_messages_py/fast
 
 #=============================================================================
@@ -409,7 +409,7 @@ tf_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 tf_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/tf_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/tf_generate_messages_eus.dir/build
 .PHONY : tf_generate_messages_eus/fast
 
 #=============================================================================
@@ -422,7 +422,7 @@ tf2_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 tf2_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf2_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/tf2_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_py.dir/build
 .PHONY : tf2_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -435,7 +435,7 @@ actionlib_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build
 .PHONY : actionlib_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -448,7 +448,7 @@ topic_tools_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 topic_tools_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/topic_tools_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/topic_tools_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_py.dir/build
 .PHONY : topic_tools_generate_messages_py/fast
 
 #=============================================================================
@@ -461,7 +461,7 @@ topic_tools_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 topic_tools_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build
 .PHONY : topic_tools_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -474,7 +474,7 @@ topic_tools_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 topic_tools_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
 .PHONY : topic_tools_generate_messages_lisp/fast
 
 #=============================================================================
@@ -487,7 +487,7 @@ tf_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 tf_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/tf_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/tf_generate_messages_cpp.dir/build
 .PHONY : tf_generate_messages_cpp/fast
 
 #=============================================================================
@@ -500,7 +500,7 @@ std_srvs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 std_srvs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_srvs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/std_srvs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_eus.dir/build
 .PHONY : std_srvs_generate_messages_eus/fast
 
 #=============================================================================
@@ -513,7 +513,7 @@ std_srvs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 std_srvs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
 .PHONY : std_srvs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -526,7 +526,7 @@ nodelet_topic_tools_gencfg: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_topic_tools_gencfg/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_topic_tools_gencfg.dir/build.make pose_estimation/CMakeFiles/nodelet_topic_tools_gencfg.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_topic_tools_gencfg.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_topic_tools_gencfg.dir/build
 .PHONY : nodelet_topic_tools_gencfg/fast
 
 #=============================================================================
@@ -539,7 +539,7 @@ topic_tools_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 topic_tools_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/topic_tools_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/topic_tools_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_eus.dir/build
 .PHONY : topic_tools_generate_messages_eus/fast
 
 #=============================================================================
@@ -552,7 +552,7 @@ topic_tools_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 topic_tools_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/topic_tools_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/topic_tools_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/topic_tools_generate_messages_cpp.dir/build
 .PHONY : topic_tools_generate_messages_cpp/fast
 
 #=============================================================================
@@ -565,7 +565,7 @@ bond_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 bond_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/bond_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/bond_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/bond_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/bond_generate_messages_lisp.dir/build
 .PHONY : bond_generate_messages_lisp/fast
 
 #=============================================================================
@@ -578,7 +578,7 @@ bond_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 bond_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/bond_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/bond_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/bond_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/bond_generate_messages_cpp.dir/build
 .PHONY : bond_generate_messages_cpp/fast
 
 #=============================================================================
@@ -591,7 +591,7 @@ roscpp_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
 .PHONY : roscpp_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -604,7 +604,7 @@ rosgraph_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
 .PHONY : rosgraph_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -617,7 +617,7 @@ tf_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 tf_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/tf_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/tf_generate_messages_lisp.dir/build
 .PHONY : tf_generate_messages_lisp/fast
 
 #=============================================================================
@@ -630,7 +630,7 @@ rosgraph_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 .PHONY : rosgraph_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -643,7 +643,7 @@ bond_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 bond_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/bond_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/bond_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/bond_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/bond_generate_messages_eus.dir/build
 .PHONY : bond_generate_messages_eus/fast
 
 #=============================================================================
@@ -656,7 +656,7 @@ roscpp_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/roscpp_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/roscpp_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_eus.dir/build
 .PHONY : roscpp_generate_messages_eus/fast
 
 #=============================================================================
@@ -669,7 +669,7 @@ visualization_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 visualization_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build
 .PHONY : visualization_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -682,7 +682,7 @@ dynamic_reconfigure_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_cpp/fast
 
 #=============================================================================
@@ -695,7 +695,7 @@ roscpp_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_lisp.dir/build
 .PHONY : roscpp_generate_messages_lisp/fast
 
 #=============================================================================
@@ -708,7 +708,7 @@ std_srvs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 std_srvs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_srvs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/std_srvs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_py.dir/build
 .PHONY : std_srvs_generate_messages_py/fast
 
 #=============================================================================
@@ -721,7 +721,7 @@ std_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/std_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_eus.dir/build
 .PHONY : std_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -734,7 +734,7 @@ dynamic_reconfigure_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_lisp/fast
 
 #=============================================================================
@@ -747,7 +747,7 @@ demo: cmake_check_build_system
 
 # fast build rule for target.
 demo/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/demo.dir/build.make pose_estimate_and_pick/CMakeFiles/demo.dir/build
 .PHONY : demo/fast
 
 #=============================================================================
@@ -760,7 +760,7 @@ tf2_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 tf2_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
 .PHONY : tf2_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -773,7 +773,7 @@ nodelet_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_cpp.dir/build
 .PHONY : nodelet_generate_messages_cpp/fast
 
 #=============================================================================
@@ -786,7 +786,7 @@ std_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
 .PHONY : std_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -799,7 +799,7 @@ std_srvs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 std_srvs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
 .PHONY : std_srvs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -812,7 +812,7 @@ bond_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 bond_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/bond_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/bond_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/bond_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/bond_generate_messages_py.dir/build
 .PHONY : bond_generate_messages_py/fast
 
 #=============================================================================
@@ -825,7 +825,7 @@ geometry_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 geometry_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
 .PHONY : geometry_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -838,7 +838,7 @@ nodelet_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_lisp.dir/build
 .PHONY : nodelet_generate_messages_lisp/fast
 
 #=============================================================================
@@ -851,7 +851,7 @@ rosgraph_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
 .PHONY : rosgraph_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -864,7 +864,7 @@ tf_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 tf_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/tf_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/tf_generate_messages_nodejs.dir/build
 .PHONY : tf_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -877,7 +877,7 @@ roscpp_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/roscpp_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/roscpp_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_py.dir/build
 .PHONY : roscpp_generate_messages_py/fast
 
 #=============================================================================
@@ -890,7 +890,7 @@ sensor_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 sensor_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
 .PHONY : sensor_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -903,7 +903,7 @@ pcl_ros_gencfg: cmake_check_build_system
 
 # fast build rule for target.
 pcl_ros_gencfg/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_ros_gencfg.dir/build.make pose_estimation/CMakeFiles/pcl_ros_gencfg.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_ros_gencfg.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_ros_gencfg.dir/build
 .PHONY : pcl_ros_gencfg/fast
 
 #=============================================================================
@@ -916,7 +916,7 @@ geometry_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 geometry_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
 .PHONY : geometry_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -929,7 +929,7 @@ visualization_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 visualization_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build
 .PHONY : visualization_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -942,7 +942,7 @@ actionlib_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
 .PHONY : actionlib_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -955,7 +955,7 @@ actionlib_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
 .PHONY : actionlib_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -968,7 +968,7 @@ sensor_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 sensor_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
 .PHONY : sensor_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -981,7 +981,7 @@ std_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
 .PHONY : std_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -994,7 +994,7 @@ pcl_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 pcl_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build
 .PHONY : pcl_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -1007,7 +1007,7 @@ actionlib_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 actionlib_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/actionlib_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/actionlib_generate_messages_cpp.dir/build
 .PHONY : actionlib_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1020,7 +1020,7 @@ sensor_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 sensor_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
 .PHONY : sensor_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1033,7 +1033,7 @@ pcl_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 pcl_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/pcl_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_py.dir/build
 .PHONY : pcl_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1046,7 +1046,7 @@ sensor_msgs_generate_messages_lisp: cmake_check_build_system
 
 # fast build rule for target.
 sensor_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
 .PHONY : sensor_msgs_generate_messages_lisp/fast
 
 #=============================================================================
@@ -1059,7 +1059,7 @@ sensor_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 sensor_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
 .PHONY : sensor_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1072,7 +1072,7 @@ std_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
 .PHONY : std_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1085,7 +1085,7 @@ geometry_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 geometry_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
 .PHONY : geometry_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1098,7 +1098,7 @@ nodelet_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_py.dir/build
 .PHONY : nodelet_generate_messages_py/fast
 
 #=============================================================================
@@ -1111,7 +1111,7 @@ roscpp_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 roscpp_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/roscpp_generate_messages_cpp.dir/build
 .PHONY : roscpp_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1124,7 +1124,7 @@ geometry_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 geometry_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
 .PHONY : geometry_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -1137,7 +1137,7 @@ std_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 std_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/std_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/std_msgs_generate_messages_py.dir/build
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1150,7 +1150,7 @@ geometry_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 geometry_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
 .PHONY : geometry_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1163,7 +1163,7 @@ dynamic_reconfigure_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_py/fast
 
 #=============================================================================
@@ -1176,7 +1176,7 @@ visualization_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 visualization_msgs_generate_messages_py/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/visualization_msgs_generate_messages_py.dir/build.make pose_estimation/CMakeFiles/visualization_msgs_generate_messages_py.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_py.dir/build.make pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_py.dir/build
 .PHONY : visualization_msgs_generate_messages_py/fast
 
 #=============================================================================
@@ -1189,7 +1189,7 @@ rosgraph_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
 .PHONY : rosgraph_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1202,7 +1202,7 @@ visualization_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 visualization_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build
 .PHONY : visualization_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1215,7 +1215,7 @@ dynamic_reconfigure_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1228,7 +1228,7 @@ visualization_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 visualization_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build
 .PHONY : visualization_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -1241,7 +1241,7 @@ pcl_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 pcl_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/build
 .PHONY : pcl_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1254,7 +1254,7 @@ rosgraph_msgs_generate_messages_cpp: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make pose_estimation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make pose_estimate_and_pick/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
 .PHONY : rosgraph_msgs_generate_messages_cpp/fast
 
 #=============================================================================
@@ -1267,7 +1267,7 @@ pcl_msgs_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 pcl_msgs_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_msgs_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/pcl_msgs_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_eus.dir/build
 .PHONY : pcl_msgs_generate_messages_eus/fast
 
 #=============================================================================
@@ -1280,7 +1280,7 @@ std_srvs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 std_srvs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
 .PHONY : std_srvs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1293,7 +1293,7 @@ pcl_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 pcl_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build
 .PHONY : pcl_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1306,7 +1306,7 @@ tf2_msgs_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 tf2_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build
 .PHONY : tf2_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1319,7 +1319,7 @@ bond_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 bond_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/bond_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/bond_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/bond_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/bond_generate_messages_nodejs.dir/build
 .PHONY : bond_generate_messages_nodejs/fast
 
 #=============================================================================
@@ -1332,7 +1332,7 @@ nodelet_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_eus.dir/build
 .PHONY : nodelet_generate_messages_eus/fast
 
 #=============================================================================
@@ -1345,7 +1345,7 @@ dynamic_reconfigure_generate_messages_eus: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_generate_messages_eus/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_eus/fast
 
 #=============================================================================
@@ -1358,7 +1358,7 @@ dynamic_reconfigure_gencfg: cmake_check_build_system
 
 # fast build rule for target.
 dynamic_reconfigure_gencfg/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_gencfg.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_gencfg.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_gencfg.dir/build.make pose_estimate_and_pick/CMakeFiles/dynamic_reconfigure_gencfg.dir/build
 .PHONY : dynamic_reconfigure_gencfg/fast
 
 #=============================================================================
@@ -1371,7 +1371,7 @@ nodelet_generate_messages_nodejs: cmake_check_build_system
 
 # fast build rule for target.
 nodelet_generate_messages_nodejs/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_nodejs.dir/build
+	$(MAKE) -f pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_nodejs.dir/build.make pose_estimate_and_pick/CMakeFiles/nodelet_generate_messages_nodejs.dir/build
 .PHONY : nodelet_generate_messages_nodejs/fast
 
 # Help Target
