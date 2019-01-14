@@ -224,7 +224,7 @@ class task1_2(object):
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1") 
 		print(count)
 
-		#return resp
+		return resp
 
 	def adj(self, _img, _level = 8):
 		colomn, row = self.h, self.w
