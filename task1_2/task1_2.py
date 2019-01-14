@@ -220,18 +220,21 @@ for i in range(1, n_class):
 
                 cv2.drawContours(show_img,[box], 0, (255, 0, 0), 2)
                 cv2.putText(show_img, brand[i - 1], (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,0.8, (0, 0, 0), 2)
-                _, labels = cv2.connectedComponents(mask)
-                p = labels[c[0,0,1],c[0,0,0]]
-                mask2[labels == p] = i
+                #_, labels = cv2.connectedComponents(mask)
+                #p = labels[c[0,0,1],c[0,0,0]]
+                #mask2[labels == p] = i
                 count[i - 1] += 1                
                 
-    
+'''
 plt.figure()
 plt.title("prediction")
 plt.imshow(show_img, cmap = "brg")
+'''
 cv2.imwrite("result.jpg", show_img)
+'''
 plt.figure()
 plt.title("prediction")
 plt.imshow(mask2,cmap = "brg",vmin = 0, vmax = n_class - 1)
 plt.show()
+'''
 print(count)
