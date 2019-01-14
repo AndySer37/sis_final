@@ -121,14 +121,21 @@ n_class = 4
 model_dir = "models"
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
-
-
+use_gpu = torch.cuda.is_available()
+num_gpu = list(range(torch.cuda.device_count()))
+print(use_gpu)
 vgg_model = VGGNet(requires_grad=True, remove_fc=True)
 fcn_model = FCN16s(pretrained_net=vgg_model, n_class=n_class)
-
+#use_gpu = False
+if use_gpu:
+    ts = time.time()
+    vgg_model = vgg_model.cuda()
+    fcn_model = fcn_model.cuda()
+    fcn_model = nn.DataParallel(fcn_model, device_ids=num_gpu)
+    print("Finish cuda loading, time elapsed {}".format(time.time() - ts))
 
 def test(model_name, img, origin):
-    state_dict = torch.load(os.path.join(model_dir, model_name), map_location='cpu')
+    state_dict = torch.load(os.path.join(model_dir, model_name))#, map_location='cpu')
     fcn_model.load_state_dict(state_dict)
 
     # convert to tensor
@@ -155,7 +162,7 @@ img[0] -= means[0]
 img[1] -= means[1]
 img[2] -= means[2]
 
-mask = test("sis_99epoch.pth", img, origin)
+mask = test("sis_99epoch.pkl", img, origin)
 
 class ShapeDetector:
     def __init__(self):
