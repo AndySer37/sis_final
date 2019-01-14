@@ -38,6 +38,8 @@
 #include <visualization_msgs/Marker.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
+#include "object_detection/task1out.h"
+
 using namespace pcl;
 using namespace std;
 using namespace cv;
