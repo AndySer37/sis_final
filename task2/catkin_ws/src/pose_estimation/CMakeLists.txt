@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(task2)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -18,6 +18,7 @@ find_package(catkin REQUIRED
     pcl_conversions
     pcl_ros
     message_generation
+    tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -132,8 +133,8 @@ include_directories(
 #   src/${PROJECT_NAME}/task2.cpp
 # )
 
-add_executable(pose_estimation src/pose_estimation.cpp src/pose_estimation.h)
-target_link_libraries(pose_estimation ${catkin_LIBRARIES})
+add_executable(demo src/demo.cpp src/pose_estimation.cpp src/pose_estimation.h)
+target_link_libraries(demo ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

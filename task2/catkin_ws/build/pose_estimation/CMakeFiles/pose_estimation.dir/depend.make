@@ -255,6 +255,7 @@ pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/r
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/tf.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/tfMessage.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/time_cache.h
+pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/transform_broadcaster.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/transform_datatypes.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf/transform_listener.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2/LinearMath/Quaternion.h
@@ -271,6 +272,7 @@ pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/r
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2_msgs/TFMessage.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2_ros/buffer.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2_ros/buffer_interface.h
+pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2_ros/transform_broadcaster.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/tf2_ros/transform_listener.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/visualization_msgs/Marker.h
 pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o: /opt/ros/kinetic/include/xmlrpcpp/XmlRpcDecl.h

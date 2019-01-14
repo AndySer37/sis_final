@@ -31,7 +31,6 @@
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/edit_cache.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/install/local.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/install/strip.dir
-/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/pose_estimation.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/tf2_msgs_generate_messages_cpp.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/actionlib_msgs_generate_messages_py.dir
@@ -69,6 +68,7 @@
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/std_srvs_generate_messages_py.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/std_msgs_generate_messages_eus.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir
+/home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/demo.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/tf2_msgs_generate_messages_eus.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/nodelet_generate_messages_cpp.dir
 /home/seanlai-laptop/sis_final/task2/catkin_ws/build/pose_estimation/CMakeFiles/install.dir

@@ -166,21 +166,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-pose_estimation/CMakeFiles/pose_estimation.dir/rule:
-	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 pose_estimation/CMakeFiles/pose_estimation.dir/rule
-.PHONY : pose_estimation/CMakeFiles/pose_estimation.dir/rule
-
-# Convenience name for target.
-pose_estimation: pose_estimation/CMakeFiles/pose_estimation.dir/rule
-
-.PHONY : pose_estimation
-
-# fast build rule for target.
-pose_estimation/fast:
-	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/pose_estimation.dir/build.make pose_estimation/CMakeFiles/pose_estimation.dir/build
-.PHONY : pose_estimation/fast
-
-# Convenience name for target.
 pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule:
 	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
 .PHONY : pose_estimation/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
@@ -704,6 +689,21 @@ dynamic_reconfigure_generate_messages_lisp: pose_estimation/CMakeFiles/dynamic_r
 dynamic_reconfigure_generate_messages_lisp/fast:
 	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_lisp/fast
+
+# Convenience name for target.
+pose_estimation/CMakeFiles/demo.dir/rule:
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 pose_estimation/CMakeFiles/demo.dir/rule
+.PHONY : pose_estimation/CMakeFiles/demo.dir/rule
+
+# Convenience name for target.
+demo: pose_estimation/CMakeFiles/demo.dir/rule
+
+.PHONY : demo
+
+# fast build rule for target.
+demo/fast:
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/build
+.PHONY : demo/fast
 
 # Convenience name for target.
 pose_estimation/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule:
@@ -1425,13 +1425,40 @@ nodelet_generate_messages_nodejs/fast:
 	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/nodelet_generate_messages_nodejs.dir/build.make pose_estimation/CMakeFiles/nodelet_generate_messages_nodejs.dir/build
 .PHONY : nodelet_generate_messages_nodejs/fast
 
+src/demo.o: src/demo.cpp.o
+
+.PHONY : src/demo.o
+
+# target to build an object file
+src/demo.cpp.o:
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/demo.cpp.o
+.PHONY : src/demo.cpp.o
+
+src/demo.i: src/demo.cpp.i
+
+.PHONY : src/demo.i
+
+# target to preprocess a source file
+src/demo.cpp.i:
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/demo.cpp.i
+.PHONY : src/demo.cpp.i
+
+src/demo.s: src/demo.cpp.s
+
+.PHONY : src/demo.s
+
+# target to generate assembly for a file
+src/demo.cpp.s:
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/demo.cpp.s
+.PHONY : src/demo.cpp.s
+
 src/pose_estimation.o: src/pose_estimation.cpp.o
 
 .PHONY : src/pose_estimation.o
 
 # target to build an object file
 src/pose_estimation.cpp.o:
-	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/pose_estimation.dir/build.make pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.o
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/pose_estimation.cpp.o
 .PHONY : src/pose_estimation.cpp.o
 
 src/pose_estimation.i: src/pose_estimation.cpp.i
@@ -1440,7 +1467,7 @@ src/pose_estimation.i: src/pose_estimation.cpp.i
 
 # target to preprocess a source file
 src/pose_estimation.cpp.i:
-	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/pose_estimation.dir/build.make pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.i
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/pose_estimation.cpp.i
 .PHONY : src/pose_estimation.cpp.i
 
 src/pose_estimation.s: src/pose_estimation.cpp.s
@@ -1449,7 +1476,7 @@ src/pose_estimation.s: src/pose_estimation.cpp.s
 
 # target to generate assembly for a file
 src/pose_estimation.cpp.s:
-	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/pose_estimation.dir/build.make pose_estimation/CMakeFiles/pose_estimation.dir/src/pose_estimation.cpp.s
+	cd /home/seanlai-laptop/sis_final/task2/catkin_ws/build && $(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/src/pose_estimation.cpp.s
 .PHONY : src/pose_estimation.cpp.s
 
 # Help Target
@@ -1461,7 +1488,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... install/local"
 	@echo "... install/strip"
-	@echo "... pose_estimation"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... tf2_msgs_generate_messages_cpp"
 	@echo "... actionlib_msgs_generate_messages_py"
@@ -1499,6 +1525,7 @@ help:
 	@echo "... std_srvs_generate_messages_py"
 	@echo "... std_msgs_generate_messages_eus"
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
+	@echo "... demo"
 	@echo "... tf2_msgs_generate_messages_eus"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... install"
@@ -1549,6 +1576,9 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... dynamic_reconfigure_gencfg"
 	@echo "... nodelet_generate_messages_nodejs"
+	@echo "... src/demo.o"
+	@echo "... src/demo.i"
+	@echo "... src/demo.s"
 	@echo "... src/pose_estimation.o"
 	@echo "... src/pose_estimation.i"
 	@echo "... src/pose_estimation.s"

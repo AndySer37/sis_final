@@ -6,6 +6,8 @@
 #include <cstring>
 #include <iostream> 
 #include <vector>
+#include <string>
+#include <tf/transform_broadcaster.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/common/centroid.h>
 #include <pcl/common/common.h>
@@ -26,6 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <std_msgs/Header.h>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <Eigen/Geometry>
@@ -43,41 +46,32 @@ class pose_estimation{
   public:
     pose_estimation();
   private:
-
-    ros::Publisher model_publisher; 
-    ros::Publisher original_object_publisher; 
+    ros::Publisher original_object1_publisher;
+    ros::Publisher original_object2_publisher;
+    ros::Publisher original_object3_publisher; 
     ros::Publisher downsampled_object_publisher; 
     ros::Publisher denoised_object_publisher; 
     ros::Publisher object_publisher; 
-    ros::Publisher align_object_publisher; 
-    ros::Publisher bounding_box_publisher;
-    ros::Publisher product_pose_publisher;
     ros::Subscriber object_mask_sub;
     ros::Subscriber scene_cloud_sub;
     //////////////////For Visualization/////////////////////////////////////////
-    vector <string> object_list;
-    vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > modelClouds;
-    
-    PointCloud<PointXYZRGB>::Ptr toteModel;//(new PointCloud<PointXYZRGB>);
+    int count;
+    int total;
+    std_msgs::Header CAMERA_FRAME;
+    vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > object_clouds;
+    vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > clusters;
     PointCloud<PointXYZRGB>::Ptr scene_cloud;//(new PointCloud<PointXYZRGB>);
-    PointCloud<PointXYZRGB>::Ptr original_cloud;//(new PointCloud<PointXYZRGB>);
+    PointCloud<PointXYZRGB>::Ptr original_cloud1;//(new PointCloud<PointXYZRGB>);
+    PointCloud<PointXYZRGB>::Ptr original_cloud2;//(new PointCloud<PointXYZRGB>);
+    PointCloud<PointXYZRGB>::Ptr original_cloud3;//(new PointCloud<PointXYZRGB>);
     PointCloud<PointXYZRGB>::Ptr downsampled_cloud;//(new PointCloud<PointXYZRGB>);
     PointCloud<PointXYZRGB>::Ptr denoised_cloud;//(new PointCloud<PointXYZRGB>);
-    PointCloud<PointXYZRGB>::Ptr preprocessed_cloud;//(new PointCloud<PointXYZRGB>);
     cv_bridge::CvImagePtr cv_ptr;
-
-
     /////////////////Functions//////////////////////////
-    void load_models();
     void update_points(const sensor_msgs::PointCloud2::ConstPtr& cloud);
-    void icp_cb(const sensor_msgs::Image::ConstPtr& mask);
-    void object_cloud_filtering(PointCloud<PointXYZRGB>::Ptr cloud ,cv_bridge::CvImagePtr mask,string object);
-    void background_align (PointCloud<PointXYZRGB>::Ptr background_model,PointCloud<PointXYZRGB>::Ptr scene_clouds, PointCloud<PointXYZRGB>::Ptr background_clouds);
-    void background_extraction(PointCloud<PointXYZRGB>::Ptr background_clouds,PointCloud<PointXYZRGB>::Ptr scene_clouds);
-    void icp_point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr object_cloud);
-    void addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals);
-    vector<double> point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals ); 
-    void icp_vis (PointCloud<PointXYZRGB>::Ptr model_point,  pcl::PointCloud<PointXYZRGBNormal>::Ptr icp_result_point,vector<double> product_pose);
-    
-    
+    void pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask);
+    void object_cloud_filtering(cv_bridge::CvImagePtr mask);
+    void point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud);
+    void point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c);
+    void point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclustered_cloud);
 };

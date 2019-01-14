@@ -283,19 +283,6 @@ gtest_main/fast:
 .PHONY : gtest_main/fast
 
 #=============================================================================
-# Target rules for targets named pose_estimation
-
-# Build rule for target.
-pose_estimation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pose_estimation
-.PHONY : pose_estimation
-
-# fast build rule for target.
-pose_estimation/fast:
-	$(MAKE) -f pose_estimation/CMakeFiles/pose_estimation.dir/build.make pose_estimation/CMakeFiles/pose_estimation.dir/build
-.PHONY : pose_estimation/fast
-
-#=============================================================================
 # Target rules for targets named tf2_msgs_generate_messages_lisp
 
 # Build rule for target.
@@ -749,6 +736,19 @@ dynamic_reconfigure_generate_messages_lisp: cmake_check_build_system
 dynamic_reconfigure_generate_messages_lisp/fast:
 	$(MAKE) -f pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build.make pose_estimation/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named demo
+
+# Build rule for target.
+demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 demo
+.PHONY : demo
+
+# fast build rule for target.
+demo/fast:
+	$(MAKE) -f pose_estimation/CMakeFiles/demo.dir/build.make pose_estimation/CMakeFiles/demo.dir/build
+.PHONY : demo/fast
 
 #=============================================================================
 # Target rules for targets named tf2_msgs_generate_messages_eus
@@ -1396,7 +1396,6 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
-	@echo "... pose_estimation"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... tf2_msgs_generate_messages_cpp"
 	@echo "... actionlib_msgs_generate_messages_py"
@@ -1432,6 +1431,7 @@ help:
 	@echo "... std_srvs_generate_messages_py"
 	@echo "... std_msgs_generate_messages_eus"
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
+	@echo "... demo"
 	@echo "... tf2_msgs_generate_messages_eus"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... std_msgs_generate_messages_lisp"

@@ -27,6 +27,10 @@ iostream
 -
 vector
 -
+string
+-
+tf/transform_broadcaster.h
+-
 pcl/io/ply_io.h
 -
 pcl/common/centroid.h
@@ -66,6 +70,8 @@ stdio.h
 stdlib.h
 -
 math.h
+-
+std_msgs/Header.h
 -
 geometry_msgs/Pose.h
 -
@@ -3040,6 +3046,14 @@ tf/LinearMath/Transform.h
 sstream
 -
 
+/opt/ros/kinetic/include/tf/transform_broadcaster.h
+tf/tf.h
+/opt/ros/kinetic/include/tf/tf/tf.h
+tf/tfMessage.h
+/opt/ros/kinetic/include/tf/tf/tfMessage.h
+tf2_ros/transform_broadcaster.h
+-
+
 /opt/ros/kinetic/include/tf/transform_datatypes.h
 string
 -
@@ -3231,6 +3245,12 @@ sstream
 -
 tf2/convert.h
 -
+
+/opt/ros/kinetic/include/tf2_ros/transform_broadcaster.h
+ros/ros.h
+/opt/ros/kinetic/include/tf2_ros/ros/ros.h
+geometry_msgs/TransformStamped.h
+/opt/ros/kinetic/include/tf2_ros/geometry_msgs/TransformStamped.h
 
 /opt/ros/kinetic/include/tf2_ros/transform_listener.h
 std_msgs/Empty.h
