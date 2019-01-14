@@ -7,7 +7,7 @@ pose_estimation::pose_estimation(){
       object_clouds[i].reset(new PointCloud<PointXYZRGB>());
     } 
     count = 0;
-    total = 0;
+    total = 0; #
     scene_cloud.reset(new PointCloud<PointXYZRGB>()); 
     original_cloud1.reset(new PointCloud<PointXYZRGB>());
     original_cloud2.reset(new PointCloud<PointXYZRGB>());
