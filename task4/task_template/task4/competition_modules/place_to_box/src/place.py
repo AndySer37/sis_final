@@ -45,35 +45,47 @@ class place_node(object):
 			return tagResponse("Tag not found!")
 
 		pose_goal = geometry_msgs.msg.Pose()
-		
-		pose_goal.position.x = trans[2] - 0.23
+	
+		pose_goal.position.x = trans[2] - 0.26
 		pose_goal.position.y = - trans[0]
 		pose_goal.position.z = trans[1] + 0.02
 
 
 		print "Your box's position : " , pose_goal.position
 
-		joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, -90)
+		for i in range(3):
+			degree = -90
+			for j in range(40):
+				joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, degree)
 
-                for joint in joint_value:
-                        joint = list(joint)
-                        # determine gripper state
-                        joint.append(0)
-                        try:
-                                self.move_group_arm.go(joint, wait=True)
-                        except:
-                                rospy.loginfo(str(joint) + " isn't a valid configuration.")
+				if len(joint_value) > 0:
 
-                grip_data = Float64()
-                grip_data.data = 0.5
-                self.pub_gripper.publish(grip_data)
-                rospy.sleep(2)
-                self.home(home)
-                rospy.sleep(2)
-                grip_data.data = 2.0
-                self.pub_gripper.publish(grip_data)
-                rospy.loginfo("End process")
-                return tagResponse("Process Successfully")
+					for joint in joint_value:
+						joint = list(joint)
+						# determine gripper state
+						joint.append(0)
+						try:
+							self.move_group_arm.go(joint, wait=True)
+						except:
+							rospy.loginfo(str(joint) + " isn't a valid configuration.")
+
+						grip_data = Float64()
+						grip_data.data = 0.5
+						self.pub_gripper.publish(grip_data)
+						rospy.sleep(2)
+						self.home(home)
+						rospy.sleep(2)
+						grip_data.data = 2.0
+						self.pub_gripper.publish(grip_data)
+						rospy.loginfo("End process")
+						return tagResponse("Process Successfully")
+
+				degree += 1
+
+			pose_goal.position.x += 0.01
+
+		return tagResponse("Cannot arrive objective pose!!")
+
 
 
 	def home(self,req):
@@ -85,14 +97,14 @@ class place_node(object):
 		joint_goal[4] = 0
 		self.move_group_arm.go(joint_goal, wait=True)
 		return homeResponse("Home now!")		
-   
+
 	def onShutdown(self):
 		self.loginfo("Shutdown.")
 
 if __name__ == '__main__': 
 	rospy.init_node('place_node',anonymous=False)
 	rospy.sleep(2)
-        place_node = place_node()
+	place_node = place_node()
 	rospy.on_shutdown(place_node.onShutdown)
 	rospy.spin()
 
