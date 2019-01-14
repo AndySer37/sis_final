@@ -23,7 +23,7 @@ import numpy as np
 import time
 import os
 
-from task1_2.srv import *
+from object_detection.srv import *
 
 class FCN16s(nn.Module):
 
