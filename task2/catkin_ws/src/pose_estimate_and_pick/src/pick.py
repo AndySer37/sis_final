@@ -8,7 +8,7 @@ from std_msgs.msg import String,Float64, Bool
 from moveit_commander.conversions import pose_to_list
 import rospy
 import tf
-from place_to_box.srv import *
+from pose_estimate_and_pick.srv import *
 import ik_4dof
 
 
@@ -17,7 +17,7 @@ import ik_4dof
 class pick_node(object):
 	def __init__(self):
 		self.listener = tf.TransformListener()
-		self.node_name = "place_node"
+		self.node_name = "pick_node"
 		check = True
 		while(check):
 			check = False
@@ -29,9 +29,65 @@ class pick_node(object):
 
 		self.pub_gripper = rospy.Publisher("/gripper_joint/command",Float64,queue_size=1)
 
-		self.place_srv = rospy.Service("pick", tag, self.transform)
+		self.place_srv = rospy.Service("pick", pick_srv, self.pick_cb)
 		self.place_srv = rospy.Service("go_home",home, self.home)
-		
+
+	def pick_cb(self,req):
+		br = tf.TransformBroadcaster()
+		tf_name = req.tf
+		try:
+			now = rospy.Time.now()
+			self.listener.waitForTransform('car_base', tf_name, now, rospy.Duration(3.0))
+			(trans, rot) = self.listener.lookupTransform('car_base', tf_name , now)
+			
+
+		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
+			tf.Exception):
+			rospy.loginfo("tf not found!")
+			return tagResponse(False)
+
+		pose_goal = geometry_msgs.msg.Pose()
+	
+		pose_goal.position.x = trans[0]
+		pose_goal.position.y = trans[1]
+		pose_goal.position.z = trans[2]
+
+
+		print "Your box's position : " , pose_goal.position
+
+
+		joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, -90)
+
+		if len(joint_value) > 0:
+
+			for joint in joint_value:
+				joint = list(joint)
+				# determine gripper state
+				joint.append(0)
+				try:
+					self.move_group_arm.go(joint, wait=True)
+				except:
+					rospy.loginfo(str(joint) + " isn't a valid configuration.")
+
+				grip_data = Float64()
+				grip_data.data = 2.0
+				self.pub_gripper.publish(grip_data)
+				rospy.sleep(2)
+
+
+				self.home(home)
+				rospy.sleep(2)
+				grip_data.data = 0.5
+				self.pub_gripper.publish(grip_data)
+
+				
+				rospy.loginfo("End process")
+
+
+				return tagResponse(True)
+
+		return tagResponse(False)		
+
 	def home(self,req):
 		joint_goal = self.move_group_arm.get_current_joint_values()
 		joint_goal[0] = 0

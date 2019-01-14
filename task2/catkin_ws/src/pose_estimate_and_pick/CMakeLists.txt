@@ -55,7 +55,7 @@ find_package(catkin REQUIRED
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
+# add_message_files(
 #   FILES
 #   Message1.msg
 #   Message2.msg
@@ -65,6 +65,9 @@ add_message_files(
 add_service_files(
     FILES
     pose_estimation.srv
+    pick_srv.srv
+    task2_srv.srv
+    home.srv
 )
 
 ## Generate actions in the 'action' folder

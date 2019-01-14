@@ -1,0 +1,5 @@
+#Request data
+string tf
+---
+#Response data
+bool result # for mission result

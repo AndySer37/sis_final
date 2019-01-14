@@ -28,9 +28,9 @@ class place_node(object):
 		self.pub_gripper = rospy.Publisher("/gripper_joint/command",Float64,queue_size=1)
 
 		self.place_srv = rospy.Service("place_to_box", tag, self.transform)
-		self.place_srv = rospy.Service("home_place",home, self.home)
+		self.place_srv = rospy.Service("home_place", home, self.home)
 
-	def transform(self,req):
+	def transform(self, req):
 		br = tf.TransformBroadcaster()
 		tag = "tag_" + str(req.tag_id)
 		try:
