@@ -39,7 +39,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "object_detection/task1out.h"
-#include "pose_estimation/pose_estimation.h"
+#include "pose_estimate_and_pick/pose_estimation.h"
 
 using namespace pcl;
 using namespace std;
