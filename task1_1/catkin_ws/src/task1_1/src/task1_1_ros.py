@@ -23,6 +23,8 @@ import numpy as np
 import time
 import os
 
+from task1_1.srv import *
+
 class ColorDetector:
     def __init__(self):
         pass
@@ -37,7 +39,7 @@ class ColorDetector:
         lower_green = np.array([35, 110, 200])
         upper_green = np.array([99, 255, 255])
         #blue
-        lower_blue = np.array([90, 100, 100])
+        lower_blue = np.array([90, 110, 100])
         upper_blue = np.array([124, 255, 255])
         #Threshold of HSV image to get the color
         mask_red   = cv2.inRange(hsv, lower_red, upper_red)
@@ -70,23 +72,25 @@ class ShapeDetector:
             # bounding box to compute the aspect ratio
             (x, y, w, h) = cv2.boundingRect(approx)
             ar = w / float(h)
-            shape = "square" if abs(w-h) <= 10  else "rect"
+            shape = "square" if ar >= 0.8 and ar <= 1.2  else "rect"
         else:
             shape = "circle"
         return shape
 
 class task1_1(object):
 	def __init__(self):
-
 		self.predict_ser = rospy.Service("prediction", task1out, self.prediction_cb)
 		self.cv_bridge = CvBridge()
-
+		
 		self.square = 0
 		self.rectangle = 0
 		self.circle = 0
 
 	def prediction_cb(self, req):
-		resp = task1outResponse()
+		self.square = 0
+		self.rectangle = 0
+		self.circle = 0
+		resp = task1outResponse()	
 		im_msg = rospy.wait_for_message('/camera/rgb/image_rect_color', Image, timeout=None)			
 		resp.pc = rospy.wait_for_message('/camera/depth_registered/points', PointCloud2, timeout=None)
 		rospy.loginfo("Get image.")
@@ -96,43 +100,17 @@ class task1_1(object):
 		except CvBridgeError as e:
 			print(e)
 		origin  = img
-		img     = img[:, :, ::-1]  # switch to BGR
-
-		img = np.transpose(img, (2, 0, 1)) / 255.
-		img[0] -= self.means[0]
-		img[1] -= self.means[1]
-		img[2] -= self.means[2]
-
-		now = rospy.get_time()
-		# convert to tensor
-		img = img[np.newaxis,:]
-		img = torch.from_numpy(img.copy()).float() 
-
-		output = self.fcn_model(img)
-		output = output.data.cpu().numpy()
-
-		N, _, h, w = output.shape
-		mask = output.transpose(0, 2, 3, 1).reshape(-1, self.n_class).argmax(axis = 1).reshape(N, h, w)[0]
 
 
-		rospy.loginfo("Predict time : %f", rospy.get_time() - now)
-		now = rospy.get_time()
-
-		show_img = np.asarray(origin)
-		count = np.zeros(3)
-		self.mask1[:,:] = 0
-		self.mask1[mask != 0] = 1
-		labels = self.adj(self.mask1)
-		mask = np.asarray(mask, np.uint8)
-
-		cd      = ColorDetector()
-		target  = cd.detect(self.mask1)
-		gray    = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
-		blurred = cv2.GaussianBlur(gray, (5,5), 0)
-		img     = cv2.Canny(blurred, 20 160)
-		cnts    = cv2.findContours(self.img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-		cnts    = cnts[1]
-		sd      = ShapeDetector()
+		cd        = ColorDetector()
+		target    = cd.detect(origin)
+		gray      = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
+		blurred   = cv2.GaussianBlur(gray, (5,5), 0)
+		img_canny = cv2.Canny(blurred, 20, 160)
+		cnts      = cv2.findContours(img_canny.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+		cnts      = cnts[1]
+		sd        = ShapeDetector()
+		img2      = target.copy()
 		for c in cnts:
 		    shape = sd.detect(c)
 		    if shape is "square":
@@ -143,11 +121,10 @@ class task1_1(object):
 		        cY = int(M["m01"] / M["m00"]) 
 		        # multiply the contour (x, y)-coordinates by the resize ratio,
 		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img, [c], 0, (255, 0, 0), 2)
+		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
 		        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        square += 1
-		        p = labels[c[0,0,1],c[0,0,0]]
-		        mask2[labels == p] = 5
+		        self.square += 1
+		        
 		    if shape is "rect":
 		        M = cv2.moments(c)
 		        if M["m00"] == 0:
@@ -156,11 +133,10 @@ class task1_1(object):
 		        cY = int(M["m01"] / M["m00"]) 
 		        # multiply the contour (x, y)-coordinates by the resize ratio,
 		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img, [c], 0, (255, 0, 0), 2)
-		        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        rectangle += 1
-		        p = labels[c[0,0,1],c[0,0,0]]
-		        mask2[labels == p] = 4
+		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
+		        cv2.putText(img2, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
+		        self.rectangle += 1
+		        
 		    if shape is "circle":
 		        M = cv2.moments(c)
 		        if M["m00"] == 0:
@@ -169,16 +145,13 @@ class task1_1(object):
 		        cY = int(M["m01"] / M["m00"]) 
 		        # multiply the contour (x, y)-coordinates by the resize ratio,
 		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img, [c], 0, (255, 0, 0), 2)
+		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
 		        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        circle += 1
-		        p = labels[c[0,0,1],c[0,0,0]]
-		        mask2[labels == p] = 6
-		rospy.loginfo("Image processing time : %f", rospy.get_time() - now)
-		cv2.imwrite("/home/andyser/Desktop/res.jpg", show_img)
-		resp.process_image = self.cv_bridge.cv2_to_imgmsg(show_img, "bgr8")
-		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1")
-		
+		        self.circle += 1
+		        	
+		resp.process_image = self.cv_bridge.cv2_to_imgmsg(img2, "bgr8")
+		cv2.imwrite("/root/output.jpg", img2)
+		print("circle", self.circle, "rectangle ", self.rectangle, "square ", self.square)
 	def adj(self, _img, _level = 8):
 		colomn, row = self.h, self.w
 		_count = 0
