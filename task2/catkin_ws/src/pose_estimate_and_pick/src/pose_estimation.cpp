@@ -32,9 +32,9 @@ pose_estimation::pose_estimation(){
     service = nh.advertiseService("pose_estimation", &pose_estimation::serviceCb, this);
 }
 
-void pose_estimation::update_points(const sensor_msgs::PointCloud2::ConstPtr& cloud){
-    CAMERA_FRAME = cloud->header;
-	  pcl::fromROSMsg (*cloud, *scene_cloud);
+void pose_estimation::update_points(const sensor_msgs::PointCloud2 cloud){
+    CAMERA_FRAME = cloud.header;
+	  pcl::fromROSMsg (cloud, *scene_cloud);
   	return;
 }
 bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res){

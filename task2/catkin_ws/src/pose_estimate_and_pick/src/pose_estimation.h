@@ -74,7 +74,7 @@ class pose_estimation{
     PointCloud<PointXYZRGB>::Ptr denoised_cloud;//(new PointCloud<PointXYZRGB>);
     cv_bridge::CvImagePtr cv_ptr;
     /////////////////Functions//////////////////////////
-    void update_points(const sensor_msgs::PointCloud2::ConstPtr& cloud);
+    void update_points(const sensor_msgs::PointCloud2 cloud);
     //void pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask);
     void object_cloud_filtering(cv_bridge::CvImagePtr mask);
     void point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud);
