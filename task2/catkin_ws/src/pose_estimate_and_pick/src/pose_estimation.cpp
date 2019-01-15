@@ -17,6 +17,7 @@ pose_estimation::pose_estimation(){
     /////////////////Ros node initialization////////
     ros::Time::init();
     ros::NodeHandle nh;
+    ros::ServiceServer service;
     /////////////////Declare Ros publisher and subscriber////////
     original_object1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/original_object_class1", 1);
     original_object2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/original_object_class2", 1);
@@ -24,11 +25,11 @@ pose_estimation::pose_estimation(){
     downsampled_object_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/downsampled_object", 1);
     denoised_object_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/denoised_object", 1); 
     object_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/object", 1);
-    object_mask_sub = nh.subscribe("mask_prediction", 1, &pose_estimation::pose_estimation_cb,this);
-    scene_cloud_sub = nh.subscribe("/camera/depth_registered/points", 1, &pose_estimation::update_points,this);
+    //object_mask_sub = nh.subscribe("mask_prediction", 1, &pose_estimation::pose_estimation_cb,this);
+    //scene_cloud_sub = nh.subscribe("/camera/depth_registered/points", 1, &pose_estimation::update_points,this);
 
   ////////////////////Server///////////////////
-    service_ = nh_.advertiseService("pose_estimation", &pose_estimation::serviceCb, this);
+    service = nh.advertiseService("pose_estimation", &pose_estimation::serviceCb, this);
 }
 
 void pose_estimation::update_points(const sensor_msgs::PointCloud2::ConstPtr& cloud){
@@ -36,21 +37,42 @@ void pose_estimation::update_points(const sensor_msgs::PointCloud2::ConstPtr& cl
 	  pcl::fromROSMsg (*cloud, *scene_cloud);
   	return;
 }
-void pose_estimation::serviceCb(pose_estimate_and_place::pose_estimation::Request &req, pose_estimate_and_place::pose_estimation::Response &res){
-  ros::ServiceClient client = nh.serviceClient<pose_estimate_and_place::pose_estimation>("pose_estimation");
+bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res){
+  ros::ServiceClient client = nh.serviceClient<pose_estimate_and_pick::pose_estimation>("pose_estimation");
   object_detection::task1out srv;
   if(client.call(srv)){ 
-    update_points(srv.pc)
-    cv_ptr = cv_bridge::toCvCopy(srv.mask, sensor_msgs::image_encodings::RGB8); 
+    update_points(srv.response.pc);
+    cv_ptr = cv_bridge::toCvCopy(srv.response.mask, sensor_msgs::image_encodings::RGB8); 
 	  object_publisher.publish(scene_cloud);
     point_cloud_preprocessing(scene_cloud);
     printf("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
     downsampled_object_publisher.publish(downsampled_cloud);
     denoised_object_publisher.publish(denoised_cloud);
-     
+    int j = 0;
+    object_cloud_filtering(cv_ptr);
+    original_object1_publisher.publish(original_cloud1);
+    original_object2_publisher.publish(original_cloud2);
+    original_object3_publisher.publish(original_cloud3);
+    printf("Downsampled and denoised cloud size: %d\n", object_clouds.size());
+    for(int i=1;i<4;i++){
+      printf("Class %d:\n", i);
+      printf("Original object cloud size: %d\n", object_clouds[i]->points.size());
+      point_cloud_clustering(object_clouds[i]);
+      for(j=0;j < count;j++){
+        point_cloud_pose_estimation(clusters[j], j);
+        std::string obj_str = "object " + std::to_string(j);
+        res.object_list[j].tagID[0] = obj_str;
+        res.object_list[j].tagID[1] = std::to_string(i-1); 
+        ROS_INFO("Object name: %s, TagID: %s", res.object_list[j].tagID[0], res.object_list[j].tagID[1]);
+      }
+      count = 0;
+    }
+    
+    std::cout << total << std::endl;
+    total = 0;
      
   }
-  
+  return true;
 }
 void pose_estimation::point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud){
   std::vector<int> indices;
@@ -128,7 +150,7 @@ void pose_estimation::point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclus
   {
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZRGB>);
     for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit){
-      cloud_cluster->points.push_back (unclustered_cloud->points[*pit]); //*
+      cloud_cluster->points.push_back (unclustered_cloud->points[*pit]); 
     }
     cloud_cluster->width = cloud_cluster->points.size();
     cloud_cluster->height = 1;
@@ -164,7 +186,7 @@ void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr s
   br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
 }
 
-void pose_estimation::pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask){
+/*void pose_estimation::pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask){
 	cv_ptr = cv_bridge::toCvCopy(mask, sensor_msgs::image_encodings::RGB8); 
 	object_publisher.publish(scene_cloud);
   point_cloud_preprocessing(scene_cloud);
@@ -189,7 +211,7 @@ void pose_estimation::pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mas
   std::cout << total << std::endl;
   total = 0;
   return;
-}
+}*/
 
 
 // int main(int argc, char** argv){

@@ -1,4 +1,4 @@
 #Request data
 ---
 #Response data
-string[][] object_list 
+Object_Tag[] object_list
