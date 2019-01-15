@@ -33,13 +33,13 @@ class ColorDetector:
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         #define range of the color in HSV
         #red
-        lower_red = np.array([156, 80, 99])
+        lower_red = np.array([156, 80, 90])
         upper_red = np.array([180, 255, 255])
         #green
-        lower_green = np.array([35, 110, 200])
+        lower_green = np.array([35, 80, 140])
         upper_green = np.array([99, 255, 255])
         #blue
-        lower_blue = np.array([90, 110, 100])
+        lower_blue = np.array([90, 110, 120])
         upper_blue = np.array([124, 255, 255])
         #Threshold of HSV image to get the color
         mask_red   = cv2.inRange(hsv, lower_red, upper_red)
@@ -49,8 +49,8 @@ class ColorDetector:
         mask1 = cv2.bitwise_or(mask_red, mask_green)
         mask  = cv2.bitwise_or(mask1, mask_blue)
         target = cv2.bitwise_and(image, image, mask=mask)
-        target = cv2.dilate(target, None, iterations = 2)
-        target = cv2.erode(target, None, iterations = 2)
+        target = cv2.dilate(target, None, iterations = 4)
+        target = cv2.erode(target, None, iterations = 4)
         return target
 
 class ShapeDetector:
@@ -85,6 +85,9 @@ class task1_1(object):
 		self.square = 0
 		self.rectangle = 0
 		self.circle = 0
+		self.MAXAREA = 20000
+		self.MINAREA = 600		
+	
 
 	def prediction_cb(self, req):
 		self.square = 0
@@ -106,48 +109,50 @@ class task1_1(object):
 		target    = cd.detect(origin)
 		gray      = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
 		blurred   = cv2.GaussianBlur(gray, (5,5), 0)
-		img_canny = cv2.Canny(blurred, 20, 160)
-		cnts      = cv2.findContours(img_canny.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+		_, threshold = cv2.threshold(blurred, 240, 255, cv2.THRESH_BINARY)
+		#img_canny = cv2.Canny(blurred, 20, 160)
+		cnts      = cv2.findContours(threshold.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 		cnts      = cnts[1]
 		sd        = ShapeDetector()
 		img2      = target.copy()
 		for c in cnts:
 		    shape = sd.detect(c)
-		    if shape is "square":
-		        M = cv2.moments(c)
-		        if M["m00"] == 0:
-		            break
-		        cX = int(M["m10"] / M["m00"]) 
-		        cY = int(M["m01"] / M["m00"]) 
-		        # multiply the contour (x, y)-coordinates by the resize ratio,
-		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
-		        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        self.square += 1
+		    if self.MAXAREA >= cv2.contourArea(c) >= self.MINAREA:
+		   	if shape is "square":
+				M = cv2.moments(c)
+			        if M["m00"] == 0:
+			            break
+			        cX = int(M["m10"] / M["m00"]) 
+			        cY = int(M["m01"] / M["m00"]) 
+			        # multiply the contour (x, y)-coordinates by the resize ratio,
+			        # then draw the contours and the name of the shape on the image
+			        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
+			        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
+			        self.square += 1
+			        
+			if shape is "rect":
+				M = cv2.moments(c)
+			        if M["m00"] == 0:
+			            break
+			        cX = int(M["m10"] / M["m00"]) 
+			        cY = int(M["m01"] / M["m00"]) 
+			        # multiply the contour (x, y)-coordinates by the resize ratio,
+			        # then draw the contours and the name of the shape on the image
+			        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
+			        cv2.putText(img2, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
+			        self.rectangle += 1
 		        
-		    if shape is "rect":
-		        M = cv2.moments(c)
-		        if M["m00"] == 0:
-		            break
-		        cX = int(M["m10"] / M["m00"]) 
-		        cY = int(M["m01"] / M["m00"]) 
-		        # multiply the contour (x, y)-coordinates by the resize ratio,
-		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
-		        cv2.putText(img2, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        self.rectangle += 1
-		        
-		    if shape is "circle":
-		        M = cv2.moments(c)
-		        if M["m00"] == 0:
-		            break
-		        cX = int(M["m10"] / M["m00"]) 
-		        cY = int(M["m01"] / M["m00"]) 
-		        # multiply the contour (x, y)-coordinates by the resize ratio,
-		        # then draw the contours and the name of the shape on the image
-		        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
-		        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
-		        self.circle += 1
+			if shape is "circle":
+			        M = cv2.moments(c)
+			        if M["m00"] == 0:
+			            break
+			        cX = int(M["m10"] / M["m00"]) 
+			        cY = int(M["m01"] / M["m00"]) 
+			        # multiply the contour (x, y)-coordinates by the resize ratio,
+			        # then draw the contours and the name of the shape on the image
+			        cv2.drawContours(img2, [c], 0, (255, 0, 0), 2)
+			        cv2.putText(img, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 0), 2)
+			        self.circle += 1
 		        	
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(img2, "bgr8")
 		cv2.imwrite("/root/output.jpg", img2)
