@@ -32,7 +32,7 @@ class place_node(object):
 		self.place_srv = rospy.Service("home_place", home, self.home)
 		self.place_srv = rospy.Service("close_grip", home, self.open)
 		self.place_srv = rospy.Service("open_grip", home, self.close)
-
+		self.grip_data = Float64()
 	def transform(self, req):
 		br = tf.TransformBroadcaster()
 		tag = "tag_" + str(req.tag_id)
@@ -114,21 +114,21 @@ class place_node(object):
 		self.move_group_arm.go(joint_goal, wait=True)
 
 	def _return(self):
-		grip_data = Float64()
-		grip_data.data = 0.5
-		self.pub_gripper.publish(grip_data)
+
+		self.grip_data.data = 0.5
+		self.pub_gripper.publish(self.grip_data)
 		rospy.sleep(2)
 		self.home(home)
 		rospy.sleep(1)
 		rospy.loginfo("End process")
 	def open(self, req):
-		grip_data.data = 0.5
-		self.pub_gripper.publish(grip_data)
+		self.grip_data.data = 0.5
+		self.pub_gripper.publish(self.grip_data)
 		rospy.loginfo("Open gripper")
 		return homeResponse("Open gripper")	
 	def close(self, req):
-		grip_data.data = 1.5
-		self.pub_gripper.publish(grip_data)
+		self.grip_data.data = 1.5
+		self.pub_gripper.publish(self.grip_data)
 		rospy.loginfo("Close gripper")
 		return homeResponse("Close gripper")	
 
