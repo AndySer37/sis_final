@@ -14,7 +14,8 @@ pose_estimation::pose_estimation(){
     original_cloud2.reset(new PointCloud<PointXYZRGB>());
     original_cloud3.reset(new PointCloud<PointXYZRGB>()); 
     downsampled_cloud.reset(new PointCloud<PointXYZRGB>()); 
-    denoised_cloud.reset(new PointCloud<PointXYZRGB>()); 
+    denoised_cloud.reset(new PointCloud<PointXYZRGB>());
+     
     /////////////////Ros node initialization////////
     ros::Time::init();
     ros::NodeHandle nh;
@@ -38,41 +39,53 @@ void pose_estimation::update_points(const sensor_msgs::PointCloud2 cloud){
   	return;
 }
 bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res){
-  ros::ServiceClient client = nh.serviceClient<object_detection::task1out>("task1out");
+  ros::ServiceClient client = nh.serviceClient<object_detection::task1out>("prediction");
   object_detection::task1out srv;
+  //std::string res.object_list[20][2];
   if(client.call(srv)){ 
     update_points(srv.response.pc);
-    cv_ptr = cv_bridge::toCvCopy(srv.response.mask, sensor_msgs::image_encodings::RGB8); 
+    cv_ptr = cv_bridge::toCvCopy(srv.response.mask, sensor_msgs::image_encodings::TYPE_64FC1); 
 	  object_publisher.publish(scene_cloud);
     point_cloud_preprocessing(scene_cloud);
-    printf("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
+    ROS_INFO("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
     downsampled_object_publisher.publish(downsampled_cloud);
     denoised_object_publisher.publish(denoised_cloud);
     int j = 0;
+    
     object_cloud_filtering(cv_ptr);
     original_object1_publisher.publish(original_cloud1);
     original_object2_publisher.publish(original_cloud2);
     original_object3_publisher.publish(original_cloud3);
-    printf("Downsampled and denoised cloud size: %d\n", object_clouds.size());
-    for(int i=1;i<4;i++){
-      printf("Class %d:\n", i);
+    ROS_INFO("Downsampled and denoised cloud size: %d\n", object_clouds.size());
+    for(int i=0;i<3;i++){
+      printf("Class %d:\n", i+1);
       printf("Original object cloud size: %d\n", object_clouds[i]->points.size());
       point_cloud_clustering(object_clouds[i]);
+      
       for(j=0;j < count;j++){
         point_cloud_pose_estimation(clusters[j], cs);
+        pose_estimate_and_pick::Object_Tag tagid;
         std::string obj_str = "object " + std::to_string(cs);
-        res.object_list[cs].tagID[0] = obj_str;
-        res.object_list[cs].tagID[1] = std::to_string(i-1); 
+        std::string tag = std::to_string(i);
+        tagid.tagID.push_back(obj_str);
+        tagid.tagID.push_back(tag);
+        res.object_list.push_back(tagid);
+        //res.object_list[cs].tagID.push_back(tag); 
         std::cout << "Object name: "<< res.object_list[cs].tagID[0] << " TagID: " << res.object_list[cs].tagID[1] << std::endl;
+        //std::cout << obj_str << ", " << i;
         cs ++;
+        ROS_INFO("Success");
       }
       count = 0;
+      clusters.clear();
     }
     cs = 0;
     std::cout << total << std::endl;
     total = 0;
-     
+    res.object_list.clear();
+    //std::cout << "Object name: "<< res.object_list[cs].tagID[0] << " TagID: " << res.object_list[cs].tagID[1] << std::endl;
   }
+  object_clouds.clear();
   return true;
 }
 void pose_estimation::point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud){
@@ -109,7 +122,7 @@ void pose_estimation::object_cloud_filtering(cv_bridge::CvImagePtr mask){
     copyPointCloud(*scene_cloud, *cloud);
     for (int row=0;row<480;row++){
       for(int column=0;column<640;column++){
-        if  (mask->image.at<Vec3b>(row,column)[0] == i){
+        if  (mask->image.at<double>(row,column) == i){
           cloud->points[c].x= std::numeric_limits<float>::quiet_NaN();
           cloud->points[c].y= std::numeric_limits<float>::quiet_NaN();
           cloud->points[c].z= std::numeric_limits<float>::quiet_NaN();
@@ -117,17 +130,19 @@ void pose_estimation::object_cloud_filtering(cv_bridge::CvImagePtr mask){
         c++;
       }
     }
+    
     pcl::removeNaNFromPointCloud(*cloud, *cloud, indices);
-    copyPointCloud(*cloud, *object_clouds[i]);
-    if(i=1){
+    object_clouds.push_back(cloud);
+    if(i==1){
       copyPointCloud(*cloud, *original_cloud1);
     }
-    else if(i=2){
+    else if(i==2){
       copyPointCloud(*cloud, *original_cloud2);
     }
-    else if(i=3){
+    else if(i==3){
       copyPointCloud(*cloud, *original_cloud3);
-    }  
+    }
+    c = 0;  
   } 
   return;
 }
@@ -158,7 +173,8 @@ void pose_estimation::point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclus
     cloud_cluster->is_dense = true;
 
     std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size() << " data points." << std::endl;
-    copyPointCloud(*cloud_cluster, *clusters[count]);
+    //copyPointCloud(*cloud_cluster, *clusters[count]);
+    clusters.push_back(cloud_cluster);
     count = count + 1;
   }
   total = total + count;
@@ -180,6 +196,7 @@ void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr s
                                        eigenVectorsPCA(0,2), eigenVectorsPCA(1,2), eigenVectorsPCA(2,2));
   tf_rot.getRotation(quat);
   quat.normalize();
+  ROS_INFO("Success_ in");
   tf_rot.setRotation(quat);
   static tf::TransformBroadcaster br;
   tf::Vector3 tf_tran = tf::Vector3(src_centroid[0], src_centroid[1], src_centroid[2]);

@@ -124,7 +124,7 @@ class task1_2(object):
 		self.means = np.array([103.939, 116.779, 123.68]) / 255. # mean of three channels in the order of BGR
 		self.h, self.w  = 480, 640
 		self.n_class = 4
-		model_dir = "/root/sis_mini_competition_2018"   # 
+		model_dir = "/home/andyser/Desktop/models"   # "/root/sis_mini_competition_2018"
 		model_name = "sis_99epoch.pkl"
 		self.vgg_model = VGGNet(self.cfg, requires_grad=True, remove_fc=True)
 		self.fcn_model = FCN16s(pretrained_net=self.vgg_model, n_class=self.n_class)
