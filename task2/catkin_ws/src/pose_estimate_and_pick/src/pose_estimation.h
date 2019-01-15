@@ -62,6 +62,7 @@ class pose_estimation{
     //////////////////For Visualization/////////////////////////////////////////
     int count;
     int total;
+    int cs;
     ros::NodeHandle nh;
     std_msgs::Header CAMERA_FRAME;
     vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > object_clouds;
