@@ -38,7 +38,7 @@ void pose_estimation::update_points(const sensor_msgs::PointCloud2 cloud){
   	return;
 }
 bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res){
-  ros::ServiceClient client = nh.serviceClient<pose_estimate_and_pick::pose_estimation>("pose_estimation");
+  ros::ServiceClient client = nh.serviceClient<object_detection::task1out>("task1out");
   object_detection::task1out srv;
   if(client.call(srv)){ 
     update_points(srv.response.pc);
