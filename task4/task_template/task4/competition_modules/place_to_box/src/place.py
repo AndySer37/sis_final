@@ -30,6 +30,8 @@ class place_node(object):
 
 		self.place_srv = rospy.Service("place_to_box", tag, self.transform)
 		self.place_srv = rospy.Service("home_place", home, self.home)
+		self.place_srv = rospy.Service("close_grip", home, self.open)
+		self.place_srv = rospy.Service("open_grip", home, self.close)
 
 	def transform(self, req):
 		br = tf.TransformBroadcaster()
@@ -118,9 +120,17 @@ class place_node(object):
 		rospy.sleep(2)
 		self.home(home)
 		rospy.sleep(1)
-		# grip_data.data = 1.5
-		# self.pub_gripper.publish(grip_data)
-		# rospy.loginfo("End process")
+		rospy.loginfo("End process")
+	def open(self, req):
+		grip_data.data = 0.5
+		self.pub_gripper.publish(grip_data)
+		rospy.loginfo("Open gripper")
+		return homeResponse("Open gripper")	
+	def close(self, req):
+		grip_data.data = 1.5
+		self.pub_gripper.publish(grip_data)
+		rospy.loginfo("Close gripper")
+		return homeResponse("Close gripper")	
 
 	def onShutdown(self):
 		rospy.loginfo("Shutdown.")
