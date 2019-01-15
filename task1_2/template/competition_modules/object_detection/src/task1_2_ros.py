@@ -177,8 +177,6 @@ class task1_2(object):
 
 		N, _, h, w = output.shape
 		mask = output.transpose(0, 2, 3, 1).reshape(-1, self.n_class).argmax(axis = 1).reshape(N, h, w)[0]
-
-
 		rospy.loginfo("Predict time : %f", rospy.get_time() - now)
 		now = rospy.get_time()
 
