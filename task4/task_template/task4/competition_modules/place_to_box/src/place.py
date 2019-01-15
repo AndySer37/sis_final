@@ -55,15 +55,15 @@ class place_node(object):
 		print "Your box's position : " , pose_goal.position
 
 		if 0.15 <= pose_goal.position.x <= 0.21:
-			if -0.1 <= pose_goal.position.y <= 0.065:
+			if -0.07 <= pose_goal.position.y <= 0.065:
 				self.special()
 				self._return()
 				return tagResponse("Process Successfully")
-				
-			elif -0.2 <= pose_goal.position.y <= 0.165:
+
+			elif -0.15 <= pose_goal.position.y <= 0.165:
 				return tagResponse("Cannot arrive")
 
-		for l in range(4):
+		for l in range(8):
 			pose_goal.position.x = x1
 			for i in range(4):
 				degree = -90
@@ -117,10 +117,10 @@ class place_node(object):
 		self.pub_gripper.publish(grip_data)
 		rospy.sleep(2)
 		self.home(home)
-		rospy.sleep(2)
-		grip_data.data = 2.0
-		self.pub_gripper.publish(grip_data)
-		rospy.loginfo("End process")
+		rospy.sleep(1)
+		# grip_data.data = 1.5
+		# self.pub_gripper.publish(grip_data)
+		# rospy.loginfo("End process")
 
 	def onShutdown(self):
 		rospy.loginfo("Shutdown.")
