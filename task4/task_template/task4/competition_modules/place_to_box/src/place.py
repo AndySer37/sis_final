@@ -30,8 +30,8 @@ class place_node(object):
 
 		self.place_srv = rospy.Service("place_to_box", tag, self.transform)
 		self.place_srv = rospy.Service("home_place", home, self.home)
-		self.place_srv = rospy.Service("close_grip", home, self.open)
-		self.place_srv = rospy.Service("open_grip", home, self.close)
+		self.place_srv = rospy.Service("close_grip", home, self.close)
+		self.place_srv = rospy.Service("open_grip", home, self.open)
 		self.grip_data = Float64()
 	def transform(self, req):
 		br = tf.TransformBroadcaster()
