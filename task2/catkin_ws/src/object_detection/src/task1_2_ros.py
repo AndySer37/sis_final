@@ -219,11 +219,13 @@ class task1_2(object):
 						mask2[labels == p] = i
 						count[i - 1] += 1
 		rospy.loginfo("Image processing time : %f", rospy.get_time() - now)
-		cv2.imwrite("/hostname/result.jpg", show_img)
+		cv2.imwrite("/home/andyser/Desktop/result.jpg", show_img)
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(show_img, "bgr8")
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1") 
-		print(count)
-
+		for i in zip(self.brand, count):
+			print(i)
+		mask2[mask2 != 0] += 200
+		cv2.imwrite("/home/andyser/Desktop/mask.jpg", mask2)
 		return resp
 
 	def adj(self, _img, _level = 8):
