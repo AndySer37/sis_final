@@ -38,6 +38,10 @@
 #include <visualization_msgs/Marker.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
+#include "object_detection/task1out.h"
+#include "pose_estimate_and_pick/pose_estimation.h"
+#include "pose_estimate_and_pick/Object_Tag.h"
+
 using namespace pcl;
 using namespace std;
 using namespace cv;
@@ -52,11 +56,14 @@ class pose_estimation{
     ros::Publisher downsampled_object_publisher; 
     ros::Publisher denoised_object_publisher; 
     ros::Publisher object_publisher; 
-    ros::Subscriber object_mask_sub;
-    ros::Subscriber scene_cloud_sub;
+    //ros::Subscriber object_mask_sub;
+    //ros::Subscriber scene_cloud_sub;
+    ros::ServiceServer service;
     //////////////////For Visualization/////////////////////////////////////////
     int count;
     int total;
+    int cs;
+    ros::NodeHandle nh;
     std_msgs::Header CAMERA_FRAME;
     vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > object_clouds;
     vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > clusters;
@@ -68,10 +75,11 @@ class pose_estimation{
     PointCloud<PointXYZRGB>::Ptr denoised_cloud;//(new PointCloud<PointXYZRGB>);
     cv_bridge::CvImagePtr cv_ptr;
     /////////////////Functions//////////////////////////
-    void update_points(const sensor_msgs::PointCloud2::ConstPtr& cloud);
-    void pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask);
+    void update_points(const sensor_msgs::PointCloud2 cloud);
+    //void pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask);
     void object_cloud_filtering(cv_bridge::CvImagePtr mask);
     void point_cloud_preprocessing(PointCloud<PointXYZRGB>::Ptr noised_cloud);
     void point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c);
     void point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclustered_cloud);
+    bool serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res);
 };
