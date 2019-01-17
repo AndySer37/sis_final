@@ -36,25 +36,25 @@ class pick_node(object):
 		br = tf.TransformBroadcaster()
 		tf_name = req.tf
 		print(tf_name)
-		try:
-			now = rospy.Time.now()
-			self.listener.waitForTransform('car_base', tf_name, now, rospy.Duration(3.0))
-			(trans, rot) = self.listener.lookupTransform('car_base', tf_name , now)
+		# try:
+		# 	now = rospy.Time.now()
+		# 	self.listener.waitForTransform('car_base', tf_name, now, rospy.Duration(3.0))
+		# 	(trans, rot) = self.listener.lookupTransform('car_base', tf_name , now)
 			
 
-		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
-			tf.Exception):
-			rospy.loginfo("tf not found!")
-			return pick_srvResponse(False)
+		# except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
+		# 	tf.Exception):
+		# 	rospy.loginfo("tf not found!")
+		# 	return pick_srvResponse(False)
 
 		pose_goal = geometry_msgs.msg.Pose()
 	
-		pose_goal.position.x = trans[0]
-		pose_goal.position.y = trans[1]
-		pose_goal.position.z = trans[2]
+		pose_goal.position.x = tf_name.position.x 
+		pose_goal.position.y = tf_name.position.y 
+		pose_goal.position.z = tf_name.position.z 
 
 
-		print "Your box's position : " , pose_goal.position
+		print "Your object's position : " , pose_goal.position
 
 
 		joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, -90)

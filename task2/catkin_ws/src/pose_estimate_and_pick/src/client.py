@@ -24,7 +24,7 @@ class client_task2(object):
 	def task2_ser(self, req):
 		pose_msg = self.pose_service()
 		for i in range(len(pose_msg.obj_list)):
-			result = self.pick_service(pose_msg.obj_list[i])
+			result = self.pick_service(pose_msg.pose[i])
 			if result.result:
 				return task2_srvResponse(pose_msg.tagID[i])
 		return task2_srvResponse("Fail")

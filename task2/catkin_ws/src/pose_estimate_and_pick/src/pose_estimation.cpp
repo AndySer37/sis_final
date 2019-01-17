@@ -1,4 +1,4 @@
-#include "pose_estimation.h"
+#include "pose_estimation1.h"
 
 pose_estimation::pose_estimation(){
     
@@ -94,6 +94,13 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
                                              final_tf(2,0), final_tf(2,1), final_tf(2,2));
         tf_rot.getRotation(quat);
         quat.normalize();
+        geometry_msgs::Pose pose;
+        quaternionTFToMsg(quat, pose.orientation); 
+        //pose.orientation = quat;
+        pose.position.x = src_centroid[0];
+        pose.position.y = src_centroid[1];
+        pose.position.z = src_centroid[2];
+        res.pose.push_back(pose);
         tf_rot.setRotation(quat);
         cout << "Tran" << endl;
         cout << final_tf(0,3) << final_tf(1,3) << final_tf(2,3);
@@ -422,7 +429,7 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/home/seanlai-laptop/Downloads/sis_final_model/");
+    string object_model_path("/home/andyser/Downloads/sis_final_model/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
     //////////////////Create object list////////////
     //object_list.push_back("crayola_24_ct");

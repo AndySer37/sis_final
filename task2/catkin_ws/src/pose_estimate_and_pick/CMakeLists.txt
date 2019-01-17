@@ -82,6 +82,7 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
+  geometry_msgs
 )
 
 ################################################
@@ -136,7 +137,7 @@ include_directories(
 #   src/${PROJECT_NAME}/task2.cpp
 # )
 
-add_executable(demo src/demo.cpp src/pose_estimation.cpp src/pose_estimation.h)
+add_executable(demo src/demo.cpp src/pose_estimation.cpp src/pose_estimation1.h)
 target_link_libraries(demo ${catkin_LIBRARIES})
 add_executable(tr src/plytopcd.cpp )
 target_link_libraries(tr ${catkin_LIBRARIES})

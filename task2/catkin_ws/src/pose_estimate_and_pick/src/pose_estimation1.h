@@ -38,9 +38,10 @@
 #include <visualization_msgs/Marker.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Pose.h>
 #include "object_detection/task1out.h"
 #include "pose_estimate_and_pick/pose_estimation.h"
-#include "pose_estimate_and_pick/Object_Tag.h"
+
 
 using namespace pcl;
 using namespace std;
