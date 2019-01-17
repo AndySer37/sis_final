@@ -12,11 +12,22 @@ class client_task2(object):
 
 
 		self.task2 = rospy.Service('task2', task2_srv, self.task2_ser)
-		
-	def task2_ser(self, req):
+		rospy.wait_for_service('pose_estimation')
+		self.pose_service = rospy.ServiceProxy('/pose_estimation', pose_estimation)
+		print("Pose_estimation service already!!")
 
-		pose_msg = rospy.ServiceProxy('pose_estimation', pose_estimation)
-		
+		rospy.wait_for_service('pick')
+		self.pick_service = rospy.ServiceProxy('/pick', pick_srv)
+		print("Picking service already!!")
+
+
+	def task2_ser(self, req):
+		pose_msg = self.pose_service()
+		for i in range(len(pose_msg.obj_list)):
+			result = self.pick_service(pose_msg.obj_list[i])
+			if result.result:
+				return task2_srvResponse(pose_msg.tagID[i])
+		return task2_srvResponse("Fail")
 
 	def onShutdown(self):
 		rospy.loginfo("Shutdown.")
