@@ -76,21 +76,31 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         res.obj_list.push_back(obj_str);
         std::string tag = std::to_string(i);
         res.tagID.push_back(tag);
-        Eigen::Matrix4f final_tf = tf1 * tf2;
+        Eigen::Matrix4f final_tf = tf1 ;
         std::cout << final_tf << endl;
+
+
+        Eigen::Vector4f src_centroid;
+        pcl::compute3DCentroid (*clusters[j], src_centroid);
+        //final_tf(0,3) += src_centroid[0];
+        //final_tf(1,3) += src_centroid[1];
+        //final_tf(2,3) += src_centroid[2];
+
         //////Matrix4f to tf::transform//////
-        tf::Vector3 tf_tran = tf::Vector3(final_tf(0,3), final_tf(1,3), final_tf(2,3));
+        tf::Vector3 tf_tran = tf::Vector3(src_centroid[0], src_centroid[1], src_centroid[2]);
         tf::Quaternion quat;
-        tf::Matrix3x3 tf_rot = tf::Matrix3x3(final_tf(0,0), final_tf(1,0), final_tf(2,0),
-                                             final_tf(0,1), final_tf(1,1), final_tf(2,1),
-                                             final_tf(0,2), final_tf(1,2), final_tf(2,2));
+        tf::Matrix3x3 tf_rot = tf::Matrix3x3(final_tf(0,0), final_tf(0,1), final_tf(0,2),
+                                             final_tf(1,0), final_tf(1,1), final_tf(1,2),
+                                             final_tf(2,0), final_tf(2,1), final_tf(2,2));
         tf_rot.getRotation(quat);
         quat.normalize();
         tf_rot.setRotation(quat);
         cout << "Tran" << endl;
-        cout << tf_tran.getX() << tf_tran.getY() << tf_tran.getZ();
+        cout << final_tf(0,3) << final_tf(1,3) << final_tf(2,3);
         cout << "Rot" << endl;
-        cout << tf_rot[0][0] ;
+        cout << "\n" << final_tf(0,0) << " " << final_tf(0,1) << " " << final_tf(0,2);
+        cout << "\n" << final_tf(1,0) << " " << final_tf(1,1) << " " << final_tf(1,2);
+        cout << "\n" << final_tf(2,0) << " " << final_tf(2,1) << " " << final_tf(2,2);
         tf::Transform tf = tf::Transform(tf_rot, tf_tran);
         /////////////////////////////////////
         br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
@@ -167,7 +177,7 @@ void pose_estimation::object_cloud_filtering(cv_bridge::CvImagePtr mask){
   int i = 0;
   PointCloud<PointXYZRGB>::Ptr cloud(new PointCloud<PointXYZRGB>);
   std::vector<int> indices;
-  std::cout << "Encoding: "<<mask->encoding;
+  std::cout << "Encoding: "<< mask->encoding << endl;
   for( i=1; i<4; i++){
     printf ("Start mask\n");
     copyPointCloud(*scene_cloud, *cloud);
@@ -298,10 +308,10 @@ Eigen::Matrix4f pose_estimation::initial_guess(PointCloud<PointXYZRGB>::Ptr clou
   pcl::compute3DCentroid (*cloud_target, target_centroid);
   Eigen::Matrix4f tf_tran = Eigen::Matrix4f::Identity();
   Eigen::Matrix4f tf_rot = Eigen::Matrix4f::Identity();
-  //
+
   Eigen::Matrix3f covariance;
-  std::cout << src_centroid << endl;
-  std::cout << target_centroid << endl;
+  std::cout << "Source Centroid: " <<src_centroid << endl;
+  std::cout << "Target Centroid: " << target_centroid << endl;
   pcl::computeCovarianceMatrixNormalized(*cloud_src, src_centroid, covariance);
   Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eigen_solver(covariance, Eigen::ComputeEigenvectors);
   Eigen::Matrix3f eigenVectorsPCA = eigen_solver.eigenvectors();
@@ -344,6 +354,9 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
     
   	addNormal( translated_sourceCloud, cloud_source_normals );
   	addNormal( targetCloud, cloud_target_normals );
+    /*addNormal( sourceCloud, cloud_source_normals );
+    addNormal( targetCloud, cloud_target_normals );*/
+
   	// addNormal( cloud_source_trans, cloud_source_trans_normals );
   	pcl::IterativeClosestPointWithNormals<pcl::PointXYZRGBNormal, pcl::PointXYZRGBNormal>::Ptr icp ( new pcl::IterativeClosestPointWithNormals<pcl::PointXYZRGBNormal, pcl::PointXYZRGBNormal> () );
   	icp->setMaximumIterations ( 1000 );
@@ -367,6 +380,7 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
 
     ///////////Generate the transform matrix from model to object scene
     Eigen::Matrix4f inverse_transformation = icp->getFinalTransformation();
+
     /*Eigen::Matrix3f inverse_object_rotation_matrix;
     for(int row=0;row<3;row++){
       for(int col=0;col<3;col++)
@@ -384,7 +398,8 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
     object_transform_matrix(0,3) += centroid[0];
     object_transform_matrix(1,3) += centroid[1];
     object_transform_matrix(2,3) += centroid[2];
-
+    */
+    /*
   	tf::Matrix3x3 tf3d;
   	tf3d.setValue((object_transform_matrix(0,0)), (object_transform_matrix(0,1)), (object_transform_matrix(0,2)), 
         (object_transform_matrix(1,0)), (object_transform_matrix(1,1)), (object_transform_matrix(1,2)), 
@@ -400,13 +415,14 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
   	rot_and_tra[4]=object_transform_matrix(0,3);
   	rot_and_tra[5]=object_transform_matrix(1,3);
   	rot_and_tra[6]=object_transform_matrix(2,3);
-	
-	  return rot_and_tra;*/
+	  */
+	  //return rot_and_tra;
     return inverse_transformation;
+    //return object_transform_matrix; 
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/home/andyser/Downloads/sis_final_model/");
+    string object_model_path("/home/seanlai-laptop/Downloads/sis_final_model/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
     //////////////////Create object list////////////
     //object_list.push_back("crayola_24_ct");
