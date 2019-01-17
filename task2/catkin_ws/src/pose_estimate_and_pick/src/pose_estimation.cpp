@@ -59,7 +59,6 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
       printf("Class %d:\n", i+1);
       printf("Original object cloud size: %d\n", object_clouds[i]->points.size());
       point_cloud_clustering(object_clouds[i]);
-      
       for(j=0;j < count;j++){
         ROS_INFO("P1 ");
         Eigen::Matrix4f tf1 = initial_guess(clusters[j], modelClouds[i]);
