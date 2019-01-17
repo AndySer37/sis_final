@@ -27,6 +27,7 @@ pose_estimation::pose_estimation(){
     model_cloud3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/model_cloud_class3", 1);
     registered_cloud1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/icp_registered_cloud1", 1);
     registered_cloud3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/icp_registered_cloud3", 1);
+    initial_guess_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/initial_guess", 1);
     object_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/object", 1);
 
   ////////////////////Server///////////////////
@@ -34,7 +35,7 @@ pose_estimation::pose_estimation(){
 }
 
 void pose_estimation::update_points(const sensor_msgs::PointCloud2 cloud){
-    CAMERA_FRAME = cloud.header;
+    CAMERA_FRAME.frame_id = "camera_rgb_optical_frame";
 	  pcl::fromROSMsg (cloud, *scene_cloud);
     //std::cout << "height " << scene_cloud->height << "width " << scene_cloud->width;
   	return;
@@ -42,24 +43,17 @@ void pose_estimation::update_points(const sensor_msgs::PointCloud2 cloud){
 bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res){
   ros::ServiceClient client = nh.serviceClient<object_detection::task1out>("prediction");
   object_detection::task1out srv;
+  static tf::TransformBroadcaster br;
   //std::string res.object_list[20][2];
   if(client.call(srv)){ 
     update_points(srv.response.pc);
     
     cv_ptr = cv_bridge::toCvCopy(srv.response.mask, sensor_msgs::image_encodings::TYPE_8UC1); 
-    // printf("%s\n", srv.response.mask.)
 	  object_publisher.publish(scene_cloud);
     //point_cloud_preprocessing(scene_cloud);
     ROS_INFO("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
-    //downsampled_object_publisher.publish(downsampled_cloud);
-    //denoised_object_publisher.publish(denoised_cloud);
     int j = 0;
-    
     object_cloud_filtering(cv_ptr);
-    /*original_object1_publisher.publish(original_cloud1);
-    original_object2_publisher.publish(original_cloud2);
-    original_object3_publisher.publish(original_cloud3);*/
-    //ROS_INFO("Downsampled and denoised cloud size: %d\n", object_clouds.size());
     load_models();
     for(int i=0;i<3;i++){
       printf("Class %d:\n", i+1);
@@ -73,9 +67,34 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         pcl::PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals ( new pcl::PointCloud<PointXYZRGBNormal> );
         pcl::PointCloud<PointXYZRGB>::Ptr ini_guess_tf_cloud ( new PointCloud<PointXYZRGB> );
         pcl::transformPointCloud (*clusters[j], *ini_guess_tf_cloud, tf1);
+        std::cout << "\nTF1: \n"<<tf1;
+        ini_guess_tf_cloud->header.frame_id = "camera_rgb_optical_frame";
+        initial_guess_publisher.publish(ini_guess_tf_cloud);
         ROS_INFO("P3 "); 
-        vector<double> tf2 = point_2_plane_icp( ini_guess_tf_cloud, modelClouds[i], cloud_source_trans_normals);
+        Eigen::Matrix4f tf2 = point_2_plane_icp( ini_guess_tf_cloud, modelClouds[i], cloud_source_trans_normals);
         ROS_INFO("P4 ");
+        std::string obj_str = "object " + std::to_string(cs);
+        res.obj_list.push_back(obj_str);
+        std::string tag = std::to_string(i);
+        res.tagID.push_back(tag);
+        Eigen::Matrix4f final_tf = tf1 * tf2;
+        std::cout << final_tf << endl;
+        //////Matrix4f to tf::transform//////
+        tf::Vector3 tf_tran = tf::Vector3(final_tf(0,3), final_tf(1,3), final_tf(2,3));
+        tf::Quaternion quat;
+        tf::Matrix3x3 tf_rot = tf::Matrix3x3(final_tf(0,0), final_tf(1,0), final_tf(2,0),
+                                             final_tf(0,1), final_tf(1,1), final_tf(2,1),
+                                             final_tf(0,2), final_tf(1,2), final_tf(2,2));
+        tf_rot.getRotation(quat);
+        quat.normalize();
+        tf_rot.setRotation(quat);
+        cout << "Tran" << endl;
+        cout << tf_tran.getX() << tf_tran.getY() << tf_tran.getZ();
+        cout << "Rot" << endl;
+        cout << tf_rot[0][0] ;
+        tf::Transform tf = tf::Transform(tf_rot, tf_tran);
+        /////////////////////////////////////
+        br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
         //Eigen::Matrix4f final_tf = tf1 * tf2;
         //point_cloud_pose_estimation(clusters[j], cs);
         ////Response////
@@ -93,12 +112,15 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         cs ++;
         ROS_INFO("Success");
         if(i==0){
+          cloud_source_trans_normals->header.frame_id = "camera_rgb_optical_frame";
           registered_cloud1_publisher.publish(cloud_source_trans_normals);
           ROS_INFO("P5 ");
         }
         else if(i==2){
+          cloud_source_trans_normals->header.frame_id = "camera_rgb_optical_frame";
           registered_cloud3_publisher.publish(cloud_source_trans_normals);
-          ROS_INFO("P6 ");
+          
+          //ROS_INFO("P6 ");
         }
       }
       count = 0;
@@ -107,7 +129,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
     cs = 0;
     std::cout << total << std::endl;
     total = 0;
-    res.object_list.clear();
+    //res.obj_list.clear();
     //initial_guess_publisher.publish(ini_guess_tf_cloud);
     //std::cout << "Object name: "<< res.object_list[cs].tagID[0] << " TagID: " << res.object_list[cs].tagID[1] << std::endl;
   }
@@ -226,7 +248,7 @@ void pose_estimation::point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclus
   std::cout << "Clusters size: " << clusters.size() << std::endl;
   return;
 }
-void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c){
+/*void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c){
   
   Eigen::Vector4f src_centroid;
   pcl::compute3DCentroid (*sourceCloud, src_centroid);
@@ -254,7 +276,7 @@ void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr s
     //cout << "publish tf" << endl;
   br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
   return;
-}
+}*/
 
 void pose_estimation::addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals)
 {
@@ -279,7 +301,8 @@ Eigen::Matrix4f pose_estimation::initial_guess(PointCloud<PointXYZRGB>::Ptr clou
   Eigen::Matrix4f tf_rot = Eigen::Matrix4f::Identity();
   //
   Eigen::Matrix3f covariance;
-  ROS_INFO("Success_ in1");
+  std::cout << src_centroid << endl;
+  std::cout << target_centroid << endl;
   pcl::computeCovarianceMatrixNormalized(*cloud_src, src_centroid, covariance);
   Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eigen_solver(covariance, Eigen::ComputeEigenvectors);
   Eigen::Matrix3f eigenVectorsPCA = eigen_solver.eigenvectors();
@@ -302,12 +325,13 @@ Eigen::Matrix4f pose_estimation::initial_guess(PointCloud<PointXYZRGB>::Ptr clou
   tf_tran(0,3) = target_centroid[0] - src_centroid[0];
   tf_tran(1,3) = target_centroid[1] - src_centroid[1];
   tf_tran(2,3) = target_centroid[2] - src_centroid[2];
+  std::cout << tf_tran(0,3) << tf_tran(1,3) << tf_tran(2,3)<< endl;
   Eigen::Matrix4f tf = tf_rot * tf_tran ;
   ROS_INFO("Success_ in3");
   return tf;
 }
 
-vector<double> pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals ){
+Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals ){
   	pcl::PointCloud<PointXYZRGBNormal>::Ptr cloud_source_normals ( new pcl::PointCloud<PointXYZRGBNormal> );
   	pcl::PointCloud<PointXYZRGBNormal>::Ptr cloud_target_normals ( new pcl::PointCloud<PointXYZRGBNormal> );
   	pcl::PointCloud<PointXYZRGB>::Ptr translated_sourceCloud(new pcl::PointCloud<PointXYZRGB>);
@@ -344,7 +368,7 @@ vector<double> pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr 
 
     ///////////Generate the transform matrix from model to object scene
     Eigen::Matrix4f inverse_transformation = icp->getFinalTransformation();
-    Eigen::Matrix3f inverse_object_rotation_matrix;
+    /*Eigen::Matrix3f inverse_object_rotation_matrix;
     for(int row=0;row<3;row++){
       for(int col=0;col<3;col++)
         inverse_object_rotation_matrix(row,col) = inverse_transformation(row,col);
@@ -378,11 +402,12 @@ vector<double> pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr 
   	rot_and_tra[5]=object_transform_matrix(1,3);
   	rot_and_tra[6]=object_transform_matrix(2,3);
 	
-	  return rot_and_tra;
+	  return rot_and_tra;*/
+    return inverse_transformation;
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/home/seanlai-laptop/Downloads/sis_final_model/");
+    string object_model_path("/home/andyser/Downloads/sis_final_model/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
     //////////////////Create object list////////////
     //object_list.push_back("crayola_24_ct");
@@ -393,7 +418,6 @@ void pose_estimation::load_models(){
     ROS_INFO("Success_load: %d", object_list.size());
     /////////////////Create object Pointcloud list//
     for (int i = 0;i<3;i++){
-      printf("1234fuck");
       PointCloud<PointXYZRGBA>::Ptr sourceCloud(new PointCloud<PointXYZRGBA>);
       string model_path = object_model_path + object_list[i] + ".ply";
       printf("%s", model_path.c_str());
@@ -401,7 +425,7 @@ void pose_estimation::load_models(){
       pcl::io::loadPLYFile(model_path, mesh);
       pcl::fromPCLPointCloud2( mesh.cloud, *sourceCloud );
       //io::loadPLYFile<PointXYZRGBA>(model_path, *sourceCloud);
-      sourceCloud->header.frame_id = "camera_link";
+      sourceCloud->header.frame_id = "camera_rgb_optical_frame";
       pcl::PointCloud<PointXYZRGB>::Ptr source_rgb(new PointCloud<PointXYZRGB>);
       pcl::copyPointCloud(*sourceCloud, *source_rgb);
       pcl::VoxelGrid<PointXYZRGB> sor;
@@ -412,7 +436,7 @@ void pose_estimation::load_models(){
       modelClouds.push_back(source_rgb);
     }
     model_cloud1_publisher.publish(modelClouds[0]);
-    model_cloud1_publisher.publish(modelClouds[2]);
+    model_cloud3_publisher.publish(modelClouds[2]);
     printf("-----------Finish load model clouds----------\n");
 }
 /*void pose_estimation::pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask){

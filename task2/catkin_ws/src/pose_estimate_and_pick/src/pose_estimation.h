@@ -57,6 +57,7 @@ class pose_estimation{
     ros::Publisher registered_cloud3_publisher;
     ros::Publisher model_cloud1_publisher;
     ros::Publisher model_cloud3_publisher;
+    ros::Publisher initial_guess_publisher;
     //ros::Publisher downsampled_object_publisher; 
     //ros::Publisher denoised_object_publisher; 
     ros::Publisher object_publisher; 
@@ -90,7 +91,7 @@ class pose_estimation{
     bool serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res);
     void addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals);
     Eigen::Matrix4f initial_guess(PointCloud<PointXYZRGB>::Ptr cloud_src, PointCloud<PointXYZRGB>::Ptr cloud_target);
-    std::vector<double> point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals);
+    Eigen::Matrix4f point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals);
     void load_models();
 
 };

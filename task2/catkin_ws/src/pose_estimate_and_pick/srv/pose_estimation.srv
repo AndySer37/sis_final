@@ -1,4 +1,5 @@
 #Request data
 ---
 #Response data
-Object_Tag[] object_list
+string[] obj_list
+string[] tagID
