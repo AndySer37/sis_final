@@ -53,8 +53,12 @@ class pose_estimation{
     ros::Publisher original_object1_publisher;
     ros::Publisher original_object2_publisher;
     ros::Publisher original_object3_publisher; 
-    ros::Publisher downsampled_object_publisher; 
-    ros::Publisher denoised_object_publisher; 
+    ros::Publisher registered_cloud1_publisher;
+    ros::Publisher registered_cloud3_publisher;
+    ros::Publisher model_cloud1_publisher;
+    ros::Publisher model_cloud3_publisher;
+    //ros::Publisher downsampled_object_publisher; 
+    //ros::Publisher denoised_object_publisher; 
     ros::Publisher object_publisher; 
     //ros::Subscriber object_mask_sub;
     //ros::Subscriber scene_cloud_sub;
@@ -67,6 +71,8 @@ class pose_estimation{
     std_msgs::Header CAMERA_FRAME;
     vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > object_clouds;
     vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > clusters;
+    vector < PointCloud<PointXYZRGB>::Ptr, Eigen::aligned_allocator <PointCloud <PointXYZRGB>::Ptr > > modelClouds;
+    vector <string> object_list;
     PointCloud<PointXYZRGB>::Ptr scene_cloud;//(new PointCloud<PointXYZRGB>);
     PointCloud<PointXYZRGB>::Ptr original_cloud1;//(new PointCloud<PointXYZRGB>);
     PointCloud<PointXYZRGB>::Ptr original_cloud2;//(new PointCloud<PointXYZRGB>);
@@ -82,4 +88,9 @@ class pose_estimation{
     void point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c);
     void point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclustered_cloud);
     bool serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res);
+    void addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals);
+    Eigen::Matrix4f initial_guess(PointCloud<PointXYZRGB>::Ptr cloud_src, PointCloud<PointXYZRGB>::Ptr cloud_target);
+    std::vector<double> point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals);
+    void load_models();
+
 };

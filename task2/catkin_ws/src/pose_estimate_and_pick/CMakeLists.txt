@@ -138,7 +138,8 @@ include_directories(
 
 add_executable(demo src/demo.cpp src/pose_estimation.cpp src/pose_estimation.h)
 target_link_libraries(demo ${catkin_LIBRARIES})
-
+add_executable(tr src/plytopcd.cpp )
+target_link_libraries(tr ${catkin_LIBRARIES})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
