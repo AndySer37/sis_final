@@ -123,7 +123,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         tf::Transform tf = tf::Transform(tf_rot, tf_tran);
 
         tf::Transform output_tf = transform * tf;
-        cout << "\nTF_Final: " << output_tf;
+        //cout << "\nTF_Final: " << output_tf;
         // tf::Quaternion quat1;
         // output_tf.getRotation()
         // tf::Matrix3x3 tf_rot1 = tf::Matrix3x3(output_tf(0,0), output_tf(0,1), output_tf(0,2),
