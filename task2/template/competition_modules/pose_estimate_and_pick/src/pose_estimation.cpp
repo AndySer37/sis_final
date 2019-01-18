@@ -58,8 +58,8 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
     load_models();
     tf::StampedTransform transform;
     try{
-          listener.waitForTransform("/base_link", "/camera_rgb_optical_frame",
-                              now, ros::Duration(3.0));
+          // listener.waitForTransform("/base_link", "/camera_rgb_optical_frame",
+          //                     now, ros::Duration(3.0));
           listener.lookupTransform("/base_link", "/camera_rgb_optical_frame",  
                              ros::Time(0), transform);
     }
