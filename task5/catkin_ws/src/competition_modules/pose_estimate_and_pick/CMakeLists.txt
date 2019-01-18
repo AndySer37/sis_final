@@ -1,24 +1,25 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pose_estimate_and_pick)
 
-# Compile as C++11, supported in ROS Kinetic and newer
+## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
-    tf
     cv_bridge
+    roscpp
+    rospy
     geometry_msgs
     sensor_msgs
+    visualization_msgs
     std_msgs
-    message_generation
-    roscpp
+    pcl_conversions
     pcl_ros
-    moveit_core
-    moveit_ros_perception
-    moveit_ros_planning_interface
+    message_generation
+    object_detection
+    tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,16 +56,19 @@ find_package(catkin REQUIRED
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+add_message_files(
+    FILES
+    Object_Tag.msg
 #   Message2.msg
-# )
+)
 
 ## Generate services in the 'srv' folder
 add_service_files(
-  FILES
-  pose_est_and_pick.srv
+    FILES
+    pose_estimation.srv
+    pick_srv.srv
+    task2_srv.srv
+    home.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -78,7 +82,7 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
-  sensor_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -112,8 +116,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES pose_estimate_and_pick
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES task2
+    CATKIN_DEPENDS message_runtime 
 #  DEPENDS system_lib
 )
 
@@ -125,17 +129,18 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-${catkin_INCLUDE_DIRS}
+    ${catkin_INCLUDE_DIRS}
 )
-
-add_executable(pose_est_and_pick_server src/pose_est_and_pick_server.cpp)
-target_link_libraries(pose_est_and_pick_server ${catkin_LIBRARIES} )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/pose_estimate_and_pick.cpp
+#   src/${PROJECT_NAME}/task2.cpp
 # )
 
+add_executable(demo src/demo.cpp src/pose_estimation.cpp src/pose_estimation1.h)
+target_link_libraries(demo ${catkin_LIBRARIES})
+add_executable(tr src/plytopcd.cpp )
+target_link_libraries(tr ${catkin_LIBRARIES})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -144,7 +149,7 @@ target_link_libraries(pose_est_and_pick_server ${catkin_LIBRARIES} )
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/pose_estimate_and_pick_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/task2_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -201,7 +206,7 @@ target_link_libraries(pose_est_and_pick_server ${catkin_LIBRARIES} )
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_pose_estimate_and_pick.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_task2.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

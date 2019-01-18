@@ -9,6 +9,7 @@ from moveit_commander.conversions import pose_to_list
 import rospy
 import tf
 from place_to_box.srv import *
+import ik_4dof
 
 
 class place_node(object):
@@ -23,20 +24,16 @@ class place_node(object):
 			except:
 				print "moveit server isn't open yet"
 				check = True
-		self.move_group_arm.set_goal_tolerance(0.02)
 
+		self.move_group_arm.set_goal_position_tolerance(0.05)
 		self.pub_gripper = rospy.Publisher("/gripper_joint/command",Float64,queue_size=1)
 
-			#self.move_group_gripper = moveit_commander.MoveGroupCommander("gripper")
-		self.robot = moveit_commander.RobotCommander()
-		self.scene = moveit_commander.PlanningSceneInterface()
-
 		self.place_srv = rospy.Service("place_to_box", tag, self.transform)
-		self.place_srv = rospy.Service("home_place",home, self.home)
-
-		#self.sub_control = rospy.Subscriber("~place_control", Bool, self.transform, queue_size=1)
-		#self.pub_trans = rospy.Publisher("~colorSegment", Image, queue_size=1)
-	def transform(self,req):
+		self.place_srv = rospy.Service("home_place", home, self.home)
+		self.place_srv = rospy.Service("close_grip", home, self.close)
+		self.place_srv = rospy.Service("open_grip", home, self.open)
+		self.grip_data = Float64()
+	def transform(self, req):
 		br = tf.TransformBroadcaster()
 		tag = "tag_" + str(req.tag_id)
 		try:
@@ -49,50 +46,53 @@ class place_node(object):
 			tf.Exception):
 			rospy.loginfo("Tag not found!")
 			return tagResponse("Tag not found!")
-		#tag_gripper = Quaternion(-0.694,-0.010, 0.719, 0.007)
-		#car_tag = Quaternion(rot[3],rot[0], rot[1], rot[2])
-		#car_gripper = car_tag * tag_gripper
 
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.orientation.x = -0.706
-		pose_goal.orientation.y = -0.001
-		pose_goal.orientation.z = 0.708
-		pose_goal.orientation.w = -0.001
-		
-		pose_goal.position.x = trans[2] - 0.185
+	
+		pose_goal.position.x = trans[2] - 0.21
 		pose_goal.position.y = - trans[0]
-		pose_goal.position.z = trans[1] + 0.01
+		pose_goal.position.z = trans[1] + 0.02
+		x1 = pose_goal.position.x
+
+		print "Your box's position : " , pose_goal.position
+
+		if 0.15 <= pose_goal.position.x <= 0.21:
+			if -0.07 <= pose_goal.position.y <= 0.065:
+				self.special()
+				self._return()
+				return tagResponse("Process Successfully")
+
+			elif -0.15 <= pose_goal.position.y <= 0.165:
+				return tagResponse("Cannot arrive")
+
+		for l in range(8):
+			pose_goal.position.x = x1
+			for i in range(4):
+				degree = -90
+				for j in range(90):
+					joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, degree)
+
+					if len(joint_value) > 0:
+
+						for joint in joint_value:
+							joint = list(joint)
+							# determine gripper state
+							joint.append(0)
+							try:
+								self.move_group_arm.go(joint, wait=True)
+							except:
+								rospy.loginfo(str(joint) + " isn't a valid configuration.")
+
+							self._return()
+							return tagResponse("Process Successfully")
+
+					degree += 1
+				pose_goal.position.x -= 0.01
+			pose_goal.position.z += 0.01
+
+		return tagResponse("Cannot arrive objective pose!!")
 
 
-		print "Your box's TF : " , pose_goal 
-
-		self.move_group_arm.set_pose_target(pose_goal)
-		plan = self.move_group_arm.go(wait=True)
-		rospy.loginfo("Move arm to target box")
-		self.move_group_arm.stop()
-		self.move_group_arm.clear_pose_targets()
-                rospy.sleep(0.5)
-		grip_data = Float64()
-		grip_data.data = 0.5
-		self.pub_gripper.publish(grip_data)
-                rospy.sleep(2)
-		#joint_goal = self.move_group_gripper.get_current_joint_values()
-		#joint_goal[0] = 0
-		#self.move_group_gripper.go(joint_goal, wait=True)
-		#rospy.loginfo("Place object into target box")
-
-
-		joint_goal = self.move_group_arm.get_current_joint_values()
-		joint_goal[0] = 0
-		joint_goal[1] = pi/3
-		joint_goal[2] = pi/3
-		joint_goal[3] = 0
-		joint_goal[4] = 0
-		self.move_group_arm.go(joint_goal, wait=True)
-		grip_data.data = 2.0 
-		self.pub_gripper.publish(grip_data)
-		rospy.loginfo("End process")
-		return tagResponse("Process Successfully")
 
 	def home(self,req):
 		joint_goal = self.move_group_arm.get_current_joint_values()
@@ -103,14 +103,42 @@ class place_node(object):
 		joint_goal[4] = 0
 		self.move_group_arm.go(joint_goal, wait=True)
 		return homeResponse("Home now!")		
-   
+
+	def special(self):
+		joint_goal = self.move_group_arm.get_current_joint_values()
+		joint_goal[0] = 0
+		joint_goal[1] = pi*3/13
+		joint_goal[2] = pi*1/4
+		joint_goal[3] = pi/2
+		joint_goal[4] = 0
+		self.move_group_arm.go(joint_goal, wait=True)
+
+	def _return(self):
+
+		self.grip_data.data = 0.5
+		self.pub_gripper.publish(self.grip_data)
+		rospy.sleep(2)
+		self.home(home)
+		rospy.sleep(1)
+		rospy.loginfo("End process")
+	def open(self, req):
+		self.grip_data.data = 0.5
+		self.pub_gripper.publish(self.grip_data)
+		rospy.loginfo("Open gripper")
+		return homeResponse("Open gripper")	
+	def close(self, req):
+		self.grip_data.data = 1.5
+		self.pub_gripper.publish(self.grip_data)
+		rospy.loginfo("Close gripper")
+		return homeResponse("Close gripper")	
+
 	def onShutdown(self):
-		self.loginfo("Shutdown.")
+		rospy.loginfo("Shutdown.")
 
 if __name__ == '__main__': 
 	rospy.init_node('place_node',anonymous=False)
-	rospy.sleep(120)
-        place_node = place_node()
+	rospy.sleep(2)
+	place_node = place_node()
 	rospy.on_shutdown(place_node.onShutdown)
 	rospy.spin()
 
