@@ -22,6 +22,7 @@ def ik_solver(x, y, z, degree):
     A = (xq)**2 + yq**2 + (zq)**2 
 
     # print "xq, zq, A: ",xq, zq, A
+    print((l2**2 + l3**2 - A) / (2*l2*l3))
     theta_3_1 = np.pi - np.arccos( (l2**2 + l3**2 - A) / (2*l2*l3) )
     theta_3_2 = - theta_3_1
     # print theta_3_1
