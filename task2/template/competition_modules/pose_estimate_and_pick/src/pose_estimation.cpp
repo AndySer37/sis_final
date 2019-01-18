@@ -143,6 +143,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
 
         /////////////////////////////////////
         br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
+        br.sendTransform(tf::StampedTransform(output_tf, ros::Time::now(), "/base_link", "AndyisHandsome"));
         //Eigen::Matrix4f final_tf = tf1 * tf2;
         //point_cloud_pose_estimation(clusters[j], cs);
         ////Response////

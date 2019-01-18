@@ -47,8 +47,8 @@ class pick_node(object):
 		print "Your object's position : " , pose_goal.position
 
 		degree = -90
-		for j in range(90):
-			joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, -90)
+		for j in range(20):
+			joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, degree)
 
 			if len(joint_value) > 0:
 
