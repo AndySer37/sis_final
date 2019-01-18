@@ -23,7 +23,7 @@ import numpy as np
 import time
 import os
 
-from task1_1.srv import *
+from object_detection.srv import *
 
 class ColorDetector:
     def __init__(self):
@@ -158,7 +158,6 @@ class task1_1(object):
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(img2, "bgr8")
 		cv2.imwrite("/root/output.jpg", img2)
 		print("circle", self.circle, "rectangle ", self.rectangle, "square ", self.square)
-        return resp
 	def adj(self, _img, _level = 8):
 		colomn, row = self.h, self.w
 		_count = 0
