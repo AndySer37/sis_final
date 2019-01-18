@@ -10,6 +10,7 @@
     <!-- Object detection -->
     <!-- <include file="$(find object_detection)/launch/task1_1.launch" if="$(eval obj_dataset == '1')" /> -->
     <!-- <include file="$(find object_detection)/launch/task1_2.launch" if="$(eval obj_dataset == '2')" /> -->
+    <include file="$(find sis_arm_planning)/launch/manipulation_tx2.launch" />
 
     <!-- Pose estimate and pick -->
     <!-- <include file="$(find pose_estimate_and_pick)/launch/task2.launch" /> -->
