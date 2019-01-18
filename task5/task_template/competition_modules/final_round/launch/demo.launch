@@ -4,7 +4,8 @@
     <arg name="obj_dataset"  default="2" />
 
     <!-- Navigation -->
-    <include file="$(find robot_navigation)/launch/robot_navigation_1.launch" />
+    <!-- <include file="$(find robot_navigation)/launch/robot_navigation_1.launch" /> -->
+    
 
     <!-- Object detection -->
     <include file="$(find object_detection)/launch/task1_1.launch" if="$(eval obj_dataset == '1')" />
@@ -15,6 +16,6 @@
 
     <!-- Place to box -->
     <include file="$(find place_to_box)/launch/place_to_box.launch" />
-
+    <node name="robot_navigate_node_1" pkg="robot_navigation" type="robot_navigate_node_1.py" output="screen"/>
     <node pkg="final_round" type="test.py" name="test" output="screen"/>
 </launch>

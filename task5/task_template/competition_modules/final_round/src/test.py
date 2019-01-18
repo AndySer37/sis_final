@@ -15,7 +15,7 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import String, Int32, Float64, Bool
 from geometry_msgs.msg import PoseStamped, Twist
 from robot_navigation.srv import robot_navigation
-from apriltags2_ros.msg import AprilTagDetection
+from apriltags2_ros.msg import AprilTagDetectionArray, AprilTagDetection
 
 # Competition ROS Srv
 from robot_navigation.srv import robot_navigation
