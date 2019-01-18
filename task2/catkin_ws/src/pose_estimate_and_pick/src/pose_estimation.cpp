@@ -44,6 +44,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
   ros::ServiceClient client = nh.serviceClient<object_detection::task1out>("prediction");
   object_detection::task1out srv;
   static tf::TransformBroadcaster br;
+  tf::TransformListener listener;
   //std::string res.object_list[20][2];
   if(client.call(srv)){ 
     update_points(srv.response.pc);
@@ -55,6 +56,15 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
     int j = 0;
     object_cloud_filtering(cv_ptr);
     load_models();
+    tf::StampedTransform transform;
+    try{
+    listener.lookupTransform("/base_link", "/camera_rgb_optical_frame",  
+                             ros::Time(0), transform);
+    }
+    catch (tf::TransformException ex){
+           ROS_ERROR("%s",ex.what());
+           ros::Duration(1.0).sleep();
+    }
     for(int i=0;i<3;i++){
       printf("Class %d:\n", i+1);
       printf("Original object cloud size: %d\n", object_clouds[i]->points.size());
@@ -79,7 +89,6 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         Eigen::Matrix4f final_tf = tf1 ;
         std::cout << final_tf << endl;
 
-
         Eigen::Vector4f src_centroid;
         pcl::compute3DCentroid (*clusters[j], src_centroid);
         //final_tf(0,3) += src_centroid[0];
@@ -94,13 +103,14 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
                                              final_tf(2,0), final_tf(2,1), final_tf(2,2));
         tf_rot.getRotation(quat);
         quat.normalize();
-        geometry_msgs::Pose pose;
-        quaternionTFToMsg(quat, pose.orientation); 
-        //pose.orientation = quat;
-        pose.position.x = src_centroid[0];
-        pose.position.y = src_centroid[1];
-        pose.position.z = src_centroid[2];
-        res.pose.push_back(pose);
+
+        // geometry_msgs::Pose pose;
+        // quaternionTFToMsg(quat, pose.orientation); 
+        // pose.position.x = src_centroid[0];
+        // pose.position.y = src_centroid[1];
+        // pose.position.z = src_centroid[2];
+        // res.pose.push_back(pose);
+
         tf_rot.setRotation(quat);
         cout << "Tran" << endl;
         cout << final_tf(0,3) << final_tf(1,3) << final_tf(2,3);
@@ -109,6 +119,25 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         cout << "\n" << final_tf(1,0) << " " << final_tf(1,1) << " " << final_tf(1,2);
         cout << "\n" << final_tf(2,0) << " " << final_tf(2,1) << " " << final_tf(2,2);
         tf::Transform tf = tf::Transform(tf_rot, tf_tran);
+
+        tf::Transform output_tf = transform * tf;
+        // tf::Quaternion quat1;
+        // output_tf.getRotation()
+        // tf::Matrix3x3 tf_rot1 = tf::Matrix3x3(output_tf(0,0), output_tf(0,1), output_tf(0,2),
+        //                                      output_tf(1,0), output_tf(1,1), output_tf(1,2),
+        //                                      output_tf(2,0), output_tf(2,1), output_tf(2,2));
+        // tf_rot1.getRotation(quat1);
+        // quat1.normalize();
+
+
+        geometry_msgs::Pose pose;
+        quaternionTFToMsg(output_tf.getRotation(), pose.orientation); 
+        tf::Vector3 pose_trans =  output_tf.getOrigin();
+        pose.position.x = pose_trans.getX();
+        pose.position.y = pose_trans.getY();
+        pose.position.z = pose_trans.getZ();
+        res.pose.push_back(pose);
+
         /////////////////////////////////////
         br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
         //Eigen::Matrix4f final_tf = tf1 * tf2;
@@ -264,35 +293,6 @@ void pose_estimation::point_cloud_clustering(PointCloud<PointXYZRGB>::Ptr unclus
   std::cout << "Clusters size: " << clusters.size() << std::endl;
   return;
 }
-/*void pose_estimation::point_cloud_pose_estimation(PointCloud<PointXYZRGB>::Ptr sourceCloud, int cl_c){
-  
-  Eigen::Vector4f src_centroid;
-  pcl::compute3DCentroid (*sourceCloud, src_centroid);
-  Eigen::Matrix3f covariance;
-  pcl::computeCovarianceMatrixNormalized(*sourceCloud, src_centroid, covariance);
-  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eigen_solver(covariance, Eigen::ComputeEigenvectors);
-  Eigen::Matrix3f eigenVectorsPCA = eigen_solver.eigenvectors();
-  Eigen::Vector3f eigenValuesPCA = eigen_solver.eigenvalues();
-  tf::Quaternion quat;
-  tf::Matrix3x3 tf_rot = tf::Matrix3x3(eigenVectorsPCA(0,0), eigenVectorsPCA(1,0), eigenVectorsPCA(2,0),
-                                       eigenVectorsPCA(0,1), eigenVectorsPCA(1,1), eigenVectorsPCA(2,1),
-                                       eigenVectorsPCA(0,2), eigenVectorsPCA(1,2), eigenVectorsPCA(2,2));
-  tf_rot.getRotation(quat);
-  quat.normalize();
-  
-  tf_rot.setRotation(quat);
-  static tf::TransformBroadcaster br;
-  tf::Vector3 tf_tran = tf::Vector3(src_centroid[0], src_centroid[1], src_centroid[2]);
-  cout << "Tran" << endl;
-  cout << tf_tran.getX() << tf_tran.getY() << tf_tran.getZ();
-  cout << "Rot" << endl;
-  cout << tf_rot[0][0] ;
-  tf::Transform tf = tf::Transform(tf_rot, tf_tran);
-  std::string obj_str = "object " + std::to_string(cl_c); 
-    //cout << "publish tf" << endl;
-  br.sendTransform(tf::StampedTransform(tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
-  return;
-}*/
 
 void pose_estimation::addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals)
 {
@@ -429,7 +429,7 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/home/andyser/Downloads/sis_final_model/");
+    string object_model_path("/root/sis_mini_competition_2018/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
     //////////////////Create object list////////////
     //object_list.push_back("crayola_24_ct");
