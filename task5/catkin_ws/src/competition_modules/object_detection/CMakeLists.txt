@@ -57,7 +57,7 @@ find_package(catkin REQUIRED
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  predict.srv
+  task1out.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -105,8 +105,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES object_detection
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES task1_2
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -118,12 +118,12 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/object_detection.cpp
+#   src/${PROJECT_NAME}/task1_2.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -134,7 +134,7 @@ ${catkin_INCLUDE_DIRS}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/object_detection_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/task1_2_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -191,7 +191,7 @@ ${catkin_INCLUDE_DIRS}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_object_detection.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_task1_2.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
