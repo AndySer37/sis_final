@@ -69,7 +69,7 @@ class pick_node(object):
 					rospy.sleep(2)
 
 
-					self.home(home)
+					self.home_4()
 					rospy.sleep(2)
 					grip_data.data = 0.5
 					self.pub_gripper.publish(grip_data)
@@ -95,6 +95,14 @@ class pick_node(object):
 	def onShutdown(self):
 		rospy.loginfo("Shutdown.")
 
+	def home_4(self):
+		joint_goal = self.move_group_arm.get_current_joint_values()
+		joint_goal[0] = 0
+		joint_goal[1] = -pi*5/13
+		joint_goal[2] = pi*3/4
+		joint_goal[3] = pi/3
+		joint_goal[4] = 0
+		self.move_group_arm.go(joint_goal, wait=True)
 
 if __name__ == '__main__': 
 	rospy.init_node('pick_node',anonymous=False)
