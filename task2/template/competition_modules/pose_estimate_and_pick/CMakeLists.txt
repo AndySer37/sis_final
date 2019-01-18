@@ -144,7 +144,7 @@ target_link_libraries(tr ${catkin_LIBRARIES})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-add_dependencies(demo src/pose_estimation.cpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(demo ${catkin_EXPORTED_TARGETS} pose_estimate_and_pick_gencpp)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
