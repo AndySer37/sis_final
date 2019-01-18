@@ -32,16 +32,16 @@ class pick_node(object):
 		self.place_srv = rospy.Service("pick", pick_srv, self.pick_cb)
 		self.place_srv = rospy.Service("go_home",home, self.home)
 
-		try:
-			now = rospy.Time.now()
-			self.listener.waitForTransform('base_link', 'camera_rgb_optical_frame', now, rospy.Duration(3.0))
-			(trans, rot) = self.listener.lookupTransform('base_link', 'camera_rgb_optical_frame' , now)
+		# try:
+		# 	now = rospy.Time.now()
+		# 	self.listener.waitForTransform('base_link', 'camera_rgb_optical_frame', now, rospy.Duration(3.0))
+		# 	(trans, rot) = self.listener.lookupTransform('base_link', 'camera_rgb_optical_frame' , now)
 			
 
-		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
-			tf.Exception):
-			rospy.loginfo("tf not found!")
-			return pick_srvResponse(False)
+		# except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
+		# 	tf.Exception):
+		# 	rospy.loginfo("tf not found!")
+		# 	return pick_srvResponse(False)
 
 	def pick_cb(self,req):
 		br = tf.TransformBroadcaster()
