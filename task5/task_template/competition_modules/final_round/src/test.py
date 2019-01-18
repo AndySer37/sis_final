@@ -69,12 +69,12 @@ class final_round_node():
         if self.fsm_state == 0:
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
-                rospy.wait_for_service(NAVIGATION_SRV,  timeout=5)
-                rospy.wait_for_service(TASK1_SRV,       timeout=5)
-                rospy.wait_for_service(TASK2_SRV,       timeout=5)
-                rospy.wait_for_service(GRIP_PLACE_SRV,  timeout=5)
-                rospy.wait_for_service(GRIP_CLOSE_SRV,  timeout=5)
-                rospy.wait_for_service(GRIP_OPEN_SRV,   timeout=5)
+                rospy.wait_for_service(NAVIGATION_SRV,  timeout=30)
+                rospy.wait_for_service(TASK1_SRV,       timeout=30)
+                rospy.wait_for_service(TASK2_SRV,       timeout=30)
+                rospy.wait_for_service(GRIP_PLACE_SRV,  timeout=30)
+                rospy.wait_for_service(GRIP_CLOSE_SRV,  timeout=30)
+                rospy.wait_for_service(GRIP_OPEN_SRV,   timeout=30)
                 self.fsm_transit(1)
 
             except (rospy.ServiceException, rospy.ROSException), e:
