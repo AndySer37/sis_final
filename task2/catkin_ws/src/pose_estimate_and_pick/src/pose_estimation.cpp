@@ -86,7 +86,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         res.obj_list.push_back(obj_str);
         std::string tag = std::to_string(i);
         res.tagID.push_back(tag);
-        Eigen::Matrix4f final_tf = tf1 ;
+        Eigen::Matrix4f final_tf = tf1 * tf2 ;
         std::cout << final_tf << endl;
 
         Eigen::Vector4f src_centroid;
