@@ -2,6 +2,10 @@ From argnctu/sis_base_image:v5
 
 
 WORKDIR /root/sis_mini_competition_2018/
+RUN /bin/bash -c "gdown --id 1I8m8o0a9fqeLQz09__tclsQaG4ea8uDL"
+RUN /bin/bash -c "gdown --id 1xacS3d5_X0QbSQCZDCAlFAju5hGzf2Xr"
+RUN /bin/bash -c "gdown --id 1mFkS9Si87L5WZxYFGHaWAMTAVr57Acim"
+RUN /bin/bash -c "gdown --id 1szZlGJAOOWivfQFDMsfpCwylBP-XMY7s"
 RUN rm -rf ./catkin_ws/src/competition_modules
 
 COPY competition_modules/ ./catkin_ws/src
