@@ -36,17 +36,17 @@ GRIP_OPEN_SRV   = 'open_grip'
 class final_round_node():
     def __init__(self):
         self.cv_bridge = CvBridge()
-        self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
+        # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
         self.tag_sub    = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
 
         self.x = 0
         self.y = 0
         self.yaw = 0
         self.tags_insight = []
-        self.target_tag = 0
-        self.num_obj = 3 ###################
+        self.target_tag = 5 # face to object platform
+        self.num_obj = 3 
         self.fsm_state = 0
-
+        
         # self.timer = rospy.Timer(rospy.Duration(1), self.process)
 
 
@@ -70,11 +70,6 @@ class final_round_node():
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
                 rospy.wait_for_service(NAVIGATION_SRV)
-                rospy.wait_for_service(TASK1_SRV)
-                rospy.wait_for_service(TASK2_SRV)
-                rospy.wait_for_service(GRIP_PLACE_SRV)
-                rospy.wait_for_service(GRIP_CLOSE_SRV)
-                rospy.wait_for_service(GRIP_OPEN_SRV)
                 print 'go to state 1'
                 self.fsm_transit(1)
 
@@ -84,29 +79,22 @@ class final_round_node():
 
 
         if self.fsm_state == 1:
-            # Check whether tag 0 is in sight?
-            self.target_tag = 0
+            # Check whether tag 5 is in sight?
+            self.target_tag = 5
             if len(self.tags_insight) != 0:
                 for tags in self.tags_insight:
                     if tags.id[0] == self.target_tag:
                         self.fsm_transit(2)
                         break
 
-            ''' Todo: if tag0 is not in sight '''
-            rospy.logerr('Tag0 is not in sight!')
-            self.fsm_transit(99)
+            ''' Todo: if tag5 is not in sight '''
+            rospy.logerr('Tag5 is not in sight!')
+            # self.fsm_transit(99)
 
 
         if self.fsm_state == 2:
-            # Count the object number
+            # Count the object number to check if the robot finished the task
             try:
-                # object_detect = rospy.ServiceProxy(TASK1_SRV, task1out)
-                # task1_resp = object_detect()
-                
-                ''' Todo: count the object number on the platform '''
-                # img = self.cv_bridge.imgmsg_to_cv2(task1_resp.mask, "bgr8")
-
-                # Finish task if no object on the platform
                 if self.num_obj == 0:
                     self.fsm_transit(88)
                     return
@@ -117,10 +105,12 @@ class final_round_node():
 
 
         if self.fsm_state == 3:
-            print 'predict and picking the object'
+            print 'predicting and picking the object'
             try:
+                rospy.wait_for_service(TASK2_SRV)
                 predict_and_pick = rospy.ServiceProxy(TASK2_SRV, task2_srv)
                 task2_resp = predict_and_pick()
+                print(task2_resp.tag_id)
                 self.target_tag = int(task2_resp.tag_id)
                 self.fsm_transit(4)
             except (rospy.ServiceException, rospy.ROSException), e:
@@ -143,6 +133,7 @@ class final_round_node():
         if self.fsm_state == 5:
             print 'Placing the object'
             try:
+                rospy.wait_for_service(GRIP_PLACE_SRV)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
                 task4_resp = place(self.target_tag)
                 ret_str = task4_resp.result
@@ -151,6 +142,7 @@ class final_round_node():
                     self.fsm_transit(99)
                     return
                 rospy.loginfo(str1)
+
                 grip_open = rospy.ServiceProxy(GRIP_OPEN_SRV, home)
                 task4_resp = grip_open()
                 rospy.sleep(1)
@@ -166,7 +158,7 @@ class final_round_node():
         if self.fsm_state == 6:
             print 'Way home'
             try:
-                self.target_tag = 0
+                self.target_tag = 5
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
                 task3_resp = car_move(self.target_tag)
                 self.fsm_transit(0)
@@ -185,7 +177,7 @@ class final_round_node():
             print('Node error')
             rospy.sleep(5)
 
-        rospy.sleep(1)
+        rospy.sleep(1.0)
 
     def onShutdown(self):
         rospy.loginfo("Node shutdown")
@@ -194,8 +186,9 @@ def main(args):
     rospy.init_node('final_round_node', anonymous = True)
     task5 = final_round_node()
     rospy.on_shutdown(task5.onShutdown)
-    while(1):
+    while not rospy.is_shutdown():
         task5.process()
+        rospy.sleep(1.0)
     rospy.spin()
 
 if __name__ == '__main__':
