@@ -4,6 +4,8 @@ From argnctu/sis_base_image:v5
 WORKDIR /root/sis_mini_competition_2018/
 RUN rm -rf ./catkin_ws/src/competition_modules
 
+RUN apt-get update && apt-get install -y ros-kinetic-move-base-msgs
+
 COPY competition_modules/ ./catkin_ws/src
 COPY master_task.launch ./catkin_ws/src/sis_arm/sis_arm_planning/launch/
 
