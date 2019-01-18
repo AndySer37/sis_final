@@ -56,14 +56,14 @@ class place_node(object):
 
 		print "Your box's position : " , pose_goal.position
 
-		if 0.15 <= pose_goal.position.x <= 0.21:
-			if -0.07 <= pose_goal.position.y <= 0.065:
-				self.special()
-				self._return()
-				return tagResponse("Process Successfully")
+		# if 0.15 <= pose_goal.position.x <= 0.21:
+		# 	if -0.07 <= pose_goal.position.y <= 0.065:
+		# 		self.special()
+		# 		self._return()
+		# 		return tagResponse("Process Successfully")
 
-			elif -0.15 <= pose_goal.position.y <= 0.165:
-				return tagResponse("Cannot arrive")
+		# 	elif -0.15 <= pose_goal.position.y <= 0.165:
+		# 		return tagResponse("Cannot arrive")
 
 		for l in range(8):
 			pose_goal.position.x = x1
@@ -80,8 +80,10 @@ class place_node(object):
 							joint.append(0)
 							try:
 								self.move_group_arm.go(joint, wait=True)
+								self.move_group_arm.stop()
 							except:
 								rospy.loginfo(str(joint) + " isn't a valid configuration.")
+								continue
 
 							self._return()
 							return tagResponse("Process Successfully")

@@ -36,17 +36,6 @@ class pick_node(object):
 		br = tf.TransformBroadcaster()
 		tf_name = req.tf
 		print(tf_name)
-		# try:
-		# 	now = rospy.Time.now()
-		# 	self.listener.waitForTransform('car_base', tf_name, now, rospy.Duration(3.0))
-		# 	(trans, rot) = self.listener.lookupTransform('car_base', tf_name , now)
-			
-
-		# except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, \
-		# 	tf.Exception):
-		# 	rospy.loginfo("tf not found!")
-		# 	return pick_srvResponse(False)
-
 		pose_goal = geometry_msgs.msg.Pose()
 	
 		pose_goal.position.x = tf_name.position.x 
@@ -67,8 +56,10 @@ class pick_node(object):
 				joint.append(0)
 				try:
 					self.move_group_arm.go(joint, wait=True)
+					self.move_group_arm.stop()
 				except:
 					rospy.loginfo(str(joint) + " isn't a valid configuration.")
+					continue
 
 				grip_data = Float64()
 				grip_data.data = 2.0
