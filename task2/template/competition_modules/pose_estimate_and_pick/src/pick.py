@@ -41,7 +41,7 @@ class pick_node(object):
 	
 		pose_goal.position.x = tf_name.position.x 
 		pose_goal.position.y = tf_name.position.y 
-		pose_goal.position.z = tf_name.position.z 
+		pose_goal.position.z = tf_name.position.z - 0.005
 
 
 		print "Your object's position : " , pose_goal.position
