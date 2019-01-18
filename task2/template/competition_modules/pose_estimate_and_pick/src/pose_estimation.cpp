@@ -52,7 +52,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
     cv_ptr = cv_bridge::toCvCopy(srv.response.mask, sensor_msgs::image_encodings::TYPE_8UC1); 
 	  object_publisher.publish(scene_cloud);
     //point_cloud_preprocessing(scene_cloud);
-    ROS_INFO("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
+    //ROS_INFO("Size of point cloud after preprocessing: %d\n",scene_cloud->points.size());
     int j = 0;
     object_cloud_filtering(cv_ptr);
     load_models();
@@ -78,7 +78,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         pcl::PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals ( new pcl::PointCloud<PointXYZRGBNormal> );
         pcl::PointCloud<PointXYZRGB>::Ptr ini_guess_tf_cloud ( new PointCloud<PointXYZRGB> );
         pcl::transformPointCloud (*clusters[j], *ini_guess_tf_cloud, tf1);
-        std::cout << "\nTF1: \n"<<tf1;
+        std::cout << "\nTF1: \n" << tf1;
         ini_guess_tf_cloud->header.frame_id = "camera_rgb_optical_frame";
         initial_guess_publisher.publish(ini_guess_tf_cloud);
         ROS_INFO("P3 "); 
@@ -88,7 +88,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         res.obj_list.push_back(obj_str);
         std::string tag = std::to_string(i);
         res.tagID.push_back(tag);
-        Eigen::Matrix4f final_tf = tf1*tf2;
+        Eigen::Matrix4f final_tf = tf1 * tf2;
         std::cout << final_tf << endl;
 
         Eigen::Vector4f src_centroid;
@@ -123,6 +123,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         tf::Transform tf = tf::Transform(tf_rot, tf_tran);
 
         tf::Transform output_tf = transform * tf;
+        cout << "\nTF_Final: " << output_tf;
         // tf::Quaternion quat1;
         // output_tf.getRotation()
         // tf::Matrix3x3 tf_rot1 = tf::Matrix3x3(output_tf(0,0), output_tf(0,1), output_tf(0,2),
