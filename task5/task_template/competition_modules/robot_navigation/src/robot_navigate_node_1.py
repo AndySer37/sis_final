@@ -14,6 +14,7 @@ class RobotNavigate(object):
         self.srv_navigate = rospy.Service("/robot_navigate", robot_navigation, self.cbNavigate)
         
         self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        self.client.wait_for_server()
         self.thres_angle = 0.1745 #10 degree
         # database of absolute pose of each tag
         self.park_x = {'0':2.47, '1':2.47, '2':2.47, '5':5.75}
