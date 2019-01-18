@@ -44,7 +44,7 @@ class final_round_node():
         self.yaw = 0
         self.tags_insight = []
         self.target_tag = 0
-        self.num_obj = 1 ###################
+        self.num_obj = 3 ###################
         self.fsm_state = 0
 
         self.timer = rospy.Timer(rospy.Duration(1), self.process)
@@ -69,17 +69,18 @@ class final_round_node():
         if self.fsm_state == 0:
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
-                rospy.wait_for_service(NAVIGATION_SRV,  timeout=5)
-                rospy.wait_for_service(TASK1_SRV,       timeout=5)
-                rospy.wait_for_service(TASK2_SRV,       timeout=5)
-                rospy.wait_for_service(GRIP_PLACE_SRV,  timeout=5)
-                rospy.wait_for_service(GRIP_CLOSE_SRV,  timeout=5)
-                rospy.wait_for_service(GRIP_OPEN_SRV,   timeout=5)
+                rospy.wait_for_service(NAVIGATION_SRV)
+                rospy.wait_for_service(TASK1_SRV)
+                rospy.wait_for_service(TASK2_SRV)
+                rospy.wait_for_service(GRIP_PLACE_SRV)
+                rospy.wait_for_service(GRIP_CLOSE_SRV)
+                rospy.wait_for_service(GRIP_OPEN_SRV)
+                print 'go to state 1'
                 self.fsm_transit(1)
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
-                self.fsm_transit(99)
+                # self.fsm_transit(99)
 
 
         if self.fsm_state == 1:
@@ -98,10 +99,9 @@ class final_round_node():
 
         if self.fsm_state == 2:
             # Count the object number
-            try:
-                object_detect = rospy.ServiceProxy(TASK1_SRV, task1out)
-                task1_resp = object_detect()
-                
+            # try:
+                # object_detect = rospy.ServiceProxy(TASK1_SRV, task1out)
+                # task1_resp = object_detect()
                 
                 ''' Todo: count the object number on the platform '''
                 # img = self.cv_bridge.imgmsg_to_cv2(task1_resp.mask, "bgr8")
@@ -109,7 +109,7 @@ class final_round_node():
                 # Finish task if no object on the platform
                 if self.num_obj == 0:
                     self.fsm_transit(88)
-
+                    return
                 self.fsm_transit(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
