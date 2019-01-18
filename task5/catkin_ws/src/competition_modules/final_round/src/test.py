@@ -47,7 +47,7 @@ class final_round_node():
         self.num_obj = 3 ###################
         self.fsm_state = 0
 
-        self.timer = rospy.Timer(rospy.Duration(1), self.process)
+        # self.timer = rospy.Timer(rospy.Duration(1), self.process)
 
 
     def tag_cb(self, msg):
@@ -65,7 +65,7 @@ class final_round_node():
     def fsm_transit(self, state_to_transit):
         self.fsm_state = state_to_transit
 
-    def process(self, event):
+    def process(self):
         if self.fsm_state == 0:
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
@@ -99,7 +99,7 @@ class final_round_node():
 
         if self.fsm_state == 2:
             # Count the object number
-            # try:
+            try:
                 # object_detect = rospy.ServiceProxy(TASK1_SRV, task1out)
                 # task1_resp = object_detect()
                 
@@ -185,7 +185,7 @@ class final_round_node():
             print('Node error')
             rospy.sleep(5)
 
-        rospy.sleep(0.5)
+        rospy.sleep(1)
 
     def onShutdown(self):
         rospy.loginfo("Node shutdown")
@@ -194,6 +194,8 @@ def main(args):
     rospy.init_node('final_round_node', anonymous = True)
     task5 = final_round_node()
     rospy.on_shutdown(task5.onShutdown)
+    while(1):
+        task5.process()
     rospy.spin()
 
 if __name__ == '__main__':
