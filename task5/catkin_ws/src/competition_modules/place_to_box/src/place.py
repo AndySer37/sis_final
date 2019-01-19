@@ -29,7 +29,7 @@ class place_node(object):
 		self.pub_gripper = rospy.Publisher("/gripper_joint/command",Float64,queue_size=1)
 
 		self.place_srv = rospy.Service("place_to_box", tag, self.transform)
-		self.place_srv = rospy.Service("home_place", home, self.home)
+		self.place_srv = rospy.Service("place_home", home, self.home)
 		self.place_srv = rospy.Service("close_grip", home, self.close)
 		self.place_srv = rospy.Service("open_grip", home, self.open)
 		self.grip_data = Float64()
@@ -56,14 +56,14 @@ class place_node(object):
 
 		print "Your box's position : " , pose_goal.position
 
-		if 0.15 <= pose_goal.position.x <= 0.21:
-			if -0.07 <= pose_goal.position.y <= 0.065:
-				self.special()
-				self._return()
-				return tagResponse("Process Successfully")
+		# if 0.15 <= pose_goal.position.x <= 0.21:
+		# 	if -0.07 <= pose_goal.position.y <= 0.065:
+		# 		self.special()
+		# 		self._return()
+		# 		return tagResponse("Process Successfully")
 
-			elif -0.15 <= pose_goal.position.y <= 0.165:
-				return tagResponse("Cannot arrive")
+		# 	elif -0.15 <= pose_goal.position.y <= 0.165:
+		# 		return tagResponse("Cannot arrive")
 
 		for l in range(8):
 			pose_goal.position.x = x1
@@ -80,8 +80,10 @@ class place_node(object):
 							joint.append(0)
 							try:
 								self.move_group_arm.go(joint, wait=True)
+								self.move_group_arm.stop()
 							except:
 								rospy.loginfo(str(joint) + " isn't a valid configuration.")
+								continue
 
 							self._return()
 							return tagResponse("Process Successfully")
@@ -134,11 +136,9 @@ class place_node(object):
 
 	def onShutdown(self):
 		rospy.loginfo("Shutdown.")
-
 if __name__ == '__main__': 
 	rospy.init_node('place_node',anonymous=False)
 	rospy.sleep(2)
 	place_node = place_node()
 	rospy.on_shutdown(place_node.onShutdown)
 	rospy.spin()
-
