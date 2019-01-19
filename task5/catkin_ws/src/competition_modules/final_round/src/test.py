@@ -98,6 +98,7 @@ class final_round_node():
                 self.pub_cmd.publish(cmd)
                 rospy.logerr('Tag%2d is not in sight!' % self, target_id)
             else:
+                print 'got tag 5'
                 cmd = Twist()
                 cmd.angular.z = 0
                 self.pub_cmd.publish(cmd)
@@ -125,7 +126,7 @@ class final_round_node():
                 str1 = task2_resp.tag_id
                 if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
                     self.target_tag = int(task2_resp.tag_id)
-                    self.fsm_transit(4)
+                    self.fsm_transit(5)######4)
                 else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -150,7 +151,7 @@ class final_round_node():
             try:
                 rospy.wait_for_service(GRIP_PLACE_SRV)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
-                task4_resp = place(self.target_tag)
+                task4_resp = place(5)########self.target_tag)
                 ret_str = task4_resp.result
                 if str1.find('Successful') == -1:
                     rospy.logerr(str1)
