@@ -37,7 +37,8 @@ class final_round_node():
     def __init__(self):
         self.cv_bridge = CvBridge()
         # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
-        self.tag_sub    = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
+        self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
+        self.cmd_pub = rospy.Publisher('cmd_vel', TwistStamped, queue_size=1)
 
         self.x = 0
         self.y = 0
@@ -65,6 +66,13 @@ class final_round_node():
     def fsm_transit(self, state_to_transit):
         self.fsm_state = state_to_transit
 
+    def tag_detection(self, target_id):
+        if len(self.tags_insight) == 0:
+            return False
+        else:    
+            for tags in self.tags_insight:
+                if tags.id[0] == self.target_id: return True           
+
     def process(self):
         if self.fsm_state == 0:
             print 'Robot Initialization'
@@ -81,19 +89,23 @@ class final_round_node():
         if self.fsm_state == 1:
             # Check whether tag 5 is in sight?
             self.target_tag = 5
-            if len(self.tags_insight) != 0:
-                for tags in self.tags_insight:
-                    if tags.id[0] == self.target_tag:
-                        self.fsm_transit(2)
-                        break
-
-            ''' Todo: if tag5 is not in sight '''
-            rospy.logerr('Tag5 is not in sight!')
-            # self.fsm_transit(99)
+            stat = rospy.wait_for_message("/odom", Odometry)
+            theta = stat.twist.twist.angular.z  
+            
+            if self.tag_detection(self, target_id) == False:
+                cmd = Twist()
+                cmd.angular.z = theta/abs(theta) * 0.1
+                self.pub_cmd.publish(cmd)
+                rospy.logerr('Tag%2d is not in sight!' % self, target_id)
+            else:
+                cmd = Twist()
+                cmd.angular.z = 0
+                self.pub_cmd.publish(cmd)
+                self.fsm_transit(2)
 
 
         if self.fsm_state == 2:
-            # Count the object number to check if the robot finished the task
+            # Count the object number to check whether the robot finished the task
             try:
                 if self.num_obj == 0:
                     self.fsm_transit(88)
@@ -110,9 +122,11 @@ class final_round_node():
                 rospy.wait_for_service(TASK2_SRV)
                 predict_and_pick = rospy.ServiceProxy(TASK2_SRV, task2_srv)
                 task2_resp = predict_and_pick()
-                print(task2_resp.tag_id)
-                self.target_tag = int(task2_resp.tag_id)
-                self.fsm_transit(4)
+                str1 = task2_resp.tag_id
+                if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
+                    self.target_tag = int(task2_resp.tag_id)
+                    self.fsm_transit(4)
+                else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
                 self.fsm_transit(99)
@@ -121,6 +135,7 @@ class final_round_node():
         if self.fsm_state == 4:
             print 'Moving to target tag'
             try:
+                rospy.wait_for_service(NAVIGATION_SRV)
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
                 task3_resp = car_move(self.target_tag)
                 self.fsm_transit(5)
