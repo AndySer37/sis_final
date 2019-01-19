@@ -3,6 +3,7 @@
 *.pth
 *.jpg
 *.png
+*.pyc
 build/
 devel/
 models/

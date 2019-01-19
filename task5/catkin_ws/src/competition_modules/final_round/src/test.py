@@ -22,7 +22,7 @@ from robot_navigation.srv import robot_navigation
 from object_detection.srv import task1out
 from pose_estimate_and_pick.srv import task2_srv
 from place_to_box.srv import home, tag
-from final_round.srv import *
+from std_srvs.srv import *
 
 # Available service name
 NAVIGATION_SRV  = 'robot_navigate'
@@ -40,7 +40,7 @@ class final_round_node():
         # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
         self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
         self.cmd_pub = rospy.Publisher('cmd_vel', TwistStamped, queue_size=1)
-        self.place_srv = rospy.Service("final_trigger", MotionTrigger , self.final_trigger_cb)
+        self.place_srv = rospy.Service("final_task_trigger", Trigger, self.final_trigger_cb)
 
         self.x = 0
         self.y = 0
@@ -52,13 +52,19 @@ class final_round_node():
 
         self.motion_trigger = False
 
-        
         # self.timer = rospy.Timer(rospy.Duration(1), self.process)
-
-
 
     def final_trigger_cb(self, req):
         self.motion_trigger = not self.motion_trigger
+        if self.motion_trigger == True:
+            rospy.loginfo('Final Task: Run')
+        else: rospy.loginfo('Final Task: Stop')
+        resp = TriggerResponse()
+        resp.success = True
+        return resp
+
+    def tag_cb(self, msg):
+        self.tags_insight = msg.detections
 
     def odom_cb(self, msg):
         self.x = msg.pose.pose.position.x
@@ -69,15 +75,15 @@ class final_round_node():
         self.yaw = euler[2]
         # print self.x, self.y, self.yaw
 
-    def fsm_transit(self, state_to_transit):
-        self.fsm_state = state_to_transit
-
     def tag_detection(self, target_id):
         if len(self.tags_insight) == 0:
             return False
         else:    
             for tags in self.tags_insight:
                 if tags.id[0] == self.target_id: return True           
+
+    def fsm_transit(self, state_to_transit):
+        self.fsm_state = state_to_transit
 
     def process(self):
         if self.fsm_state == 0:
