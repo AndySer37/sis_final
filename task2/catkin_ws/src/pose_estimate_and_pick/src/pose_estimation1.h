@@ -82,6 +82,7 @@ class pose_estimation{
     PointCloud<PointXYZRGB>::Ptr downsampled_cloud;//(new PointCloud<PointXYZRGB>);
     PointCloud<PointXYZRGB>::Ptr denoised_cloud;//(new PointCloud<PointXYZRGB>);
     cv_bridge::CvImagePtr cv_ptr;
+    Eigen::Matrix4f model2orig;
     /////////////////Functions//////////////////////////
     void update_points(const sensor_msgs::PointCloud2 cloud);
     //void pose_estimation_cb(const sensor_msgs::Image::ConstPtr& mask);
@@ -92,7 +93,7 @@ class pose_estimation{
     bool serviceCb(pose_estimate_and_pick::pose_estimation::Request &req, pose_estimate_and_pick::pose_estimation::Response &res);
     void addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals);
     Eigen::Matrix4f initial_guess(PointCloud<PointXYZRGB>::Ptr cloud_src, PointCloud<PointXYZRGB>::Ptr cloud_target);
-    Eigen::Matrix4f point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_source_trans_normals);
+    Eigen::Matrix4f point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGB>::Ptr cloud_source_trans_normals);
     void load_models();
 
 };

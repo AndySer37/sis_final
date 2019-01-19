@@ -13,7 +13,7 @@ from cv_bridge import CvBridge, CvBridgeError
 # ROS Msg
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String, Int32, Float64, Bool
-from geometry_msgs.msg import PoseStamped, Twist
+from geometry_msgs.msg import PoseStamped, Twist, TwistStamped
 from robot_navigation.srv import robot_navigation
 from apriltags2_ros.msg import AprilTagDetectionArray, AprilTagDetection
 
@@ -78,8 +78,8 @@ class final_round_node():
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
                 rospy.wait_for_service(NAVIGATION_SRV)
-                print 'go to state 1'
-                self.fsm_transit(1)
+                print 'go to state 2' #######################3
+                self.fsm_transit(2)
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -92,7 +92,7 @@ class final_round_node():
             stat = rospy.wait_for_message("/odom", Odometry)
             theta = stat.twist.twist.angular.z  
             
-            if self.tag_detection(self, target_id) == False:
+            if self.tag_detection(self.target_tag) == False:
                 cmd = Twist()
                 cmd.angular.z = theta/abs(theta) * 0.1
                 self.pub_cmd.publish(cmd)
@@ -154,15 +154,13 @@ class final_round_node():
                 ret_str = task4_resp.result
                 if str1.find('Successful') == -1:
                     rospy.logerr(str1)
+                    '''
+                    Todo: deal with condition of pick fail
+                    '''
                     self.fsm_transit(99)
                     return
                 rospy.loginfo(str1)
-
-                grip_open = rospy.ServiceProxy(GRIP_OPEN_SRV, home)
-                task4_resp = grip_open()
-                rospy.sleep(1)
-                grip_home = rospy.ServiceProxy(GRIP_HOME_SRV, home)
-                task4_resp = grip_home()
+                self.num_obj = self.num_obj - 1
                 self.fsm_transit(6)
 
             except (rospy.ServiceException, rospy.ROSException), e:
@@ -176,7 +174,7 @@ class final_round_node():
                 self.target_tag = 5
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
                 task3_resp = car_move(self.target_tag)
-                self.fsm_transit(0)
+                self.fsm_transit(1)
                 rospy.sleep(2)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
