@@ -22,6 +22,7 @@ from robot_navigation.srv import robot_navigation
 from object_detection.srv import task1out
 from pose_estimate_and_pick.srv import task2_srv
 from place_to_box.srv import home, tag
+from final_round.srv import *
 
 # Available service name
 NAVIGATION_SRV  = 'robot_navigate'
@@ -39,6 +40,7 @@ class final_round_node():
         # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
         self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
         self.cmd_pub = rospy.Publisher('cmd_vel', TwistStamped, queue_size=1)
+        self.place_srv = rospy.Service("final_trigger", MotionTrigger , self.final_trigger_cb)
 
         self.x = 0
         self.y = 0
@@ -47,12 +49,16 @@ class final_round_node():
         self.target_tag = 5 # face to object platform
         self.num_obj = 3 
         self.fsm_state = 0
+
+        self.motion_trigger = False
+
         
         # self.timer = rospy.Timer(rospy.Duration(1), self.process)
 
 
-    def tag_cb(self, msg):
-        self.tags_insight = msg.detections
+
+    def final_trigger_cb(self, req):
+        self.motion_trigger = not self.motion_trigger
 
     def odom_cb(self, msg):
         self.x = msg.pose.pose.position.x
@@ -200,8 +206,10 @@ def main(args):
     rospy.init_node('final_round_node', anonymous = True)
     task5 = final_round_node()
     rospy.on_shutdown(task5.onShutdown)
+
     while not rospy.is_shutdown():
-        task5.process()
+        if task5.motion_trigger == True:
+            task5.process()
         rospy.sleep(1.0)
     rospy.spin()
 
