@@ -57,8 +57,8 @@ class final_round_node():
     def final_trigger_cb(self, req):
         self.motion_trigger = not self.motion_trigger
         if self.motion_trigger == True:
-            rospy.loginfo('Final Task: Run')
-        else: rospy.loginfo('Final Task: Stop')
+            rospy.loginfo('Final Task state:%2d Run' % self.fsm_state)
+        else: rospy.loginfo('Final Task state:%2d Stop' % self.fsm_state)
         resp = TriggerResponse()
         resp.success = True
         return resp
@@ -139,6 +139,7 @@ class final_round_node():
                 if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
                     self.target_tag = int(task2_resp.tag_id)
                     self.fsm_transit(5)######4)
+                    print 'skipppppppppppp state 4'
                 else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -163,7 +164,7 @@ class final_round_node():
             try:
                 rospy.wait_for_service(GRIP_PLACE_SRV)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
-                task4_resp = place(5)########self.target_tag)
+                task4_resp = place(self.target_tag)
                 ret_str = task4_resp.result
                 if str1.find('Successful') == -1:
                     rospy.logerr(str1)
@@ -174,7 +175,8 @@ class final_round_node():
                     return
                 rospy.loginfo(str1)
                 self.num_obj = self.num_obj - 1
-                self.fsm_transit(6)
+                self.fsm_transit(1)
+                print 'skipppppppppppp state 6'
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
