@@ -340,7 +340,7 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/root/sis_mini_competition_2018/");
+    string object_model_path("/home/andyser/code/sis/sis_final/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
 
     object_list.push_back("doublemint");    
