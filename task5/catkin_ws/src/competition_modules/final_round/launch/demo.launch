@@ -4,15 +4,14 @@
     <arg name="obj_dataset"  default="2" />
 
     <!-- Navigation -->
-    <!-- <node name="robot_navigate_node_1" pkg="robot_navigation" type="robot_navigate_node_1.py" output="screen"/> -->
+    <include file="$(find sis_mobile)/launch/tag_detection.launch"/>
     <include file="$(find robot_navigation)/launch/robot_navigation.launch" />
-
+    
     <!-- Object detection -->
     <!-- <include file="$(find object_detection)/launch/task1_1.launch" if="$(eval obj_dataset == '1')" /> -->
 
-    <!-- Pose estimate and pick -->
     <include file="$(find object_detection)/launch/task1_2.launch" /> <!-- if="$(eval obj_dataset == '2')" /> -->
-
+    <!-- Pose estimate and pick -->
     <include file="$(find pose_estimate_and_pick)/launch/task2.launch" />
     <include file="$(find sis_arm_planning)/launch/manipulation_tx2.launch" />
     <include file="$(find realsense_camera)/launch/sr300_nodelet_rgbd.launch">

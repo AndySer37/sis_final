@@ -40,7 +40,7 @@ class final_round_node():
         self.cv_bridge = CvBridge()
         # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
         self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
-        self.cmd_pub = rospy.Publisher('cmd_vel', TwistStamped, queue_size=1)
+        self.cmd_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
         self.trigger_srv    = rospy.Service("final_task_trigger", Trigger, self.final_trigger_cb)
         self.state_srv      = rospy.Service("final_goto_state", GotoState, self.set_state_cb)
 
@@ -90,7 +90,7 @@ class final_round_node():
             return False
         else:    
             for tags in self.tags_insight:
-                if tags.id[0] == self.target_id: return True           
+                if tags.id[0] == target_id: return True           
 
     def fsm_transit(self, state_to_transit):
         self.fsm_state = state_to_transit
@@ -112,14 +112,15 @@ class final_round_node():
             # Check whether tag 5 is in sight?
             try:
                 self.target_tag = 5
-                stat = rospy.wait_for_message("/odom", Odometry, timeout=3)
+                stat = rospy.wait_for_message("odom", Odometry, timeout=3)
                 theta = stat.twist.twist.angular.z  
-                
+                if theta == 0:
+                    theta = 0.75
                 if self.tag_detection(self.target_tag) == False:
                     cmd = Twist()
                     cmd.angular.z = theta/abs(theta) * 0.1
                     self.pub_cmd.publish(cmd)
-                    rospy.logerr('Tag%2d is not in sight!' % self, target_id)
+                    rospy.logerr('Tag%2d is not in sight!' % self.target_tag)
                 else:
                     print 'Got tag 5'
                     cmd = Twist()
@@ -148,6 +149,8 @@ class final_round_node():
             print 'predicting and picking the object'
             try:
                 rospy.wait_for_service(TASK2_SRV, timeout=10)
+                grip_open = rospy.ServiceProxy(GRIP_OPEN_SRV, task2_srv)
+                task2_resp = grip_open()
                 predict_and_pick = rospy.ServiceProxy(TASK2_SRV, task2_srv)
                 task2_resp = predict_and_pick()
                 str1 = task2_resp.tag_id

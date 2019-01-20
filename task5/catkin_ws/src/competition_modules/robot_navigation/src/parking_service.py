@@ -101,7 +101,7 @@ class Parking(object):
 				self.pub_cmd.publish(cmd)
 				rospy.sleep(time/2)
 				cmd = Twist()
-        self.pub_cmd.publish(cmd)
+				self.pub_cmd.publish(cmd)
 			elif dist <= self.dist_thres:
 				if self.sign == 0:
 					print "reach waypoint"
