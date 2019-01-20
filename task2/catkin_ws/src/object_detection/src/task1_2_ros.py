@@ -124,7 +124,7 @@ class task1_2(object):
 		self.means = np.array([103.939, 116.779, 123.68]) / 255. # mean of three channels in the order of BGR
 		self.h, self.w  = 480, 640
 		self.n_class = 4
-		model_dir = "/home/andyser/Desktop/models"   # "/root/sis_mini_competition_2018"
+		model_dir = "/home/seanlai-laptop/Desktop/models"   # "/root/sis_mini_competition_2018"
 		model_name = "sis_99epoch.pkl"
 		self.vgg_model = VGGNet(self.cfg, requires_grad=True, remove_fc=True)
 		self.fcn_model = FCN16s(pretrained_net=self.vgg_model, n_class=self.n_class)
@@ -219,13 +219,13 @@ class task1_2(object):
 						mask2[labels == p] = i
 						count[i - 1] += 1
 		rospy.loginfo("Image processing time : %f", rospy.get_time() - now)
-		cv2.imwrite("/home/andyser/Desktop/result.jpg", show_img)
+		cv2.imwrite("/home/seanlai-laptop/Desktop/result.jpg", show_img)
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(show_img, "bgr8")
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1") 
 		for i in zip(self.brand, count):
 			print(i)
 		mask2[mask2 != 0] += 200
-		cv2.imwrite("/home/andyser/Desktop/mask.jpg", mask2)
+		cv2.imwrite("/home/seanlai-laptop/Desktop/mask.jpg", mask2)
 		return resp
 
 	def adj(self, _img, _level = 8):
