@@ -134,12 +134,12 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         // quat1.normalize();
         
         Eigen::Matrix4f david_4x4 = ((tf2*tf1).inverse())*(model2orig.inverse());
-        
+        std::cout << "\nTF1: \n" << tf1;
         tf::Vector3 david_tran = tf::Vector3(david_4x4(0, 3), david_4x4(1, 3), david_4x4(2, 3));
         tf::Matrix3x3 david_rot = tf::Matrix3x3(david_4x4(0,0), david_4x4(0,1), david_4x4(0,2),
                                              david_4x4(1,0), david_4x4(1,1), david_4x4(1,2),
                                              david_4x4(2,0), david_4x4(2,1), david_4x4(2,2));
-
+        
         tf::Transform david_tf = tf::Transform(david_rot, david_tran);
         geometry_msgs::Pose pose;
         quaternionTFToMsg(david_tf.getRotation(), pose.orientation); 
@@ -148,7 +148,7 @@ bool pose_estimation::serviceCb(pose_estimate_and_pick::pose_estimation::Request
         pose.position.y = pose_trans.getY();
         pose.position.z = pose_trans.getZ();
         res.pose.push_back(pose);
-
+        
         /////////////////////////////////////
         br.sendTransform(tf::StampedTransform(david_tf, ros::Time::now(), CAMERA_FRAME.frame_id, obj_str));
         //Eigen::Matrix4f final_tf = tf1 * tf2;
@@ -464,7 +464,7 @@ Eigen::Matrix4f pose_estimation::point_2_plane_icp (PointCloud<PointXYZRGB>::Ptr
 }
 void pose_estimation::load_models(){
     //////////////////Define model path/////////////
-    string object_model_path("/home/andyser/code/sis/sis_final/");
+    string object_model_path("/home/seanlai-laptop/Downloads/sis_final_model/");
     //string bin_model_path("/home/nvidia/ctsphub-workshop-2018/04-perception/03-case_study/arc2016_TX2/catkin_ws/src/pose_estimation/src/model/bins/");
     //////////////////Create object list////////////
     //object_list.push_back("crayola_24_ct");

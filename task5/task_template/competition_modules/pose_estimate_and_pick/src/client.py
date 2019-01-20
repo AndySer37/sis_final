@@ -11,7 +11,7 @@ class client_task2(object):
 	def __init__(self):
 
 		rospy.wait_for_service('pick_home')
-		self.pick_service = rospy.ServiceProxy('/pick_home', home)
+		self.pick_home = rospy.ServiceProxy('/pick_home', home)
 		print("Pick_home service already!!")
 
 		self.task2 = rospy.Service('task2', task2_srv, self.task2_ser)
@@ -25,7 +25,8 @@ class client_task2(object):
 
 
 	def task2_ser(self, req):
-		pick_home_res = self.pick_service()
+		
+		pick_home_res = self.pick_home()
 		pose_msg = self.pose_service()
 		for i in range(len(pose_msg.obj_list)):
 			result = self.pick_service(pose_msg.pose[i])
