@@ -23,6 +23,7 @@ from object_detection.srv import task1out
 from pose_estimate_and_pick.srv import task2_srv
 from place_to_box.srv import home, tag
 from std_srvs.srv import *
+from final_round import *
 
 # Available service name
 NAVIGATION_SRV  = 'robot_navigate'
@@ -40,7 +41,8 @@ class final_round_node():
         # self.odom_sub   = rospy.Subscriber("/odometry/filtered", Odometry, self.odom_cb)
         self.tag_sub = rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.tag_cb, queue_size = 1)
         self.cmd_pub = rospy.Publisher('cmd_vel', TwistStamped, queue_size=1)
-        self.place_srv = rospy.Service("final_task_trigger", Trigger, self.final_trigger_cb)
+        self.trigger_srv    = rospy.Service("final_task_trigger", Trigger, self.final_trigger_cb)
+        self.state_srv      = rospy.Service("final_goto_state", GotoState, self.set_state_cb)
 
         self.x = 0
         self.y = 0
@@ -53,8 +55,17 @@ class final_round_node():
         self.motion_trigger = False
 
         # self.timer = rospy.Timer(rospy.Duration(1), self.process)
+    def set_state_cb(self, req):
+        # Set FSM's state 
+        if self.fsm_state != req.data:
+            rospy.loginfo('Final Task switch state from %d to %d' % (self.fsm_state, req.data))
+            self.fsm_state = req.data
+        resp = GotoStateResponse()
+        resp.success = True
+        return resp
 
     def final_trigger_cb(self, req):
+        # Start and Stop FSM
         self.motion_trigger = not self.motion_trigger
         if self.motion_trigger == True:
             rospy.loginfo('Final Task state:%2d Run' % self.fsm_state)
@@ -91,11 +102,11 @@ class final_round_node():
             try:    # Wait for rosservice ready
                 rospy.wait_for_service(NAVIGATION_SRV)
                 print 'go to state 2' #######################3
-                self.fsm_transit(2)
+                self.fsm_transit(1)
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
-                # self.fsm_transit(99)
+                self.fsm_transit(99)
 
 
         if self.fsm_state == 1:
@@ -199,9 +210,8 @@ class final_round_node():
         if self.fsm_state == 88:
             rospy.loginfo('Finish the tasks!')
             self.timer.shutdown()
-                
-
-        if self.fsm_state == 99:    # Error state
+            exit(-1)               
+        else:                  # Error state
             print('Node error')
             rospy.sleep(5)
 
