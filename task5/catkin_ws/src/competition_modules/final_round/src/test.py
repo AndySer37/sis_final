@@ -119,13 +119,13 @@ class final_round_node():
                 if self.tag_detection(self.target_tag) == False:
                     cmd = Twist()
                     cmd.angular.z = theta/abs(theta) * 0.1
-                    self.pub_cmd.publish(cmd)
+                    self.cmd_pub.publish(cmd)
                     rospy.logerr('Tag%2d is not in sight!' % self.target_tag)
                 else:
                     print 'Got tag 5'
                     cmd = Twist()
                     cmd.angular.z = 0
-                    self.pub_cmd.publish(cmd)
+                    self.cmd_pub.publish(cmd)
                     self.fsm_transit(2)
 
             except (rospy.ServiceException, rospy.ROSException), e:
@@ -149,7 +149,7 @@ class final_round_node():
             print 'predicting and picking the object'
             try:
                 rospy.wait_for_service(TASK2_SRV, timeout=10)
-                grip_open = rospy.ServiceProxy(GRIP_OPEN_SRV, task2_srv)
+                grip_open = rospy.ServiceProxy(GRIP_OPEN_SRV, home)
                 task2_resp = grip_open()
                 predict_and_pick = rospy.ServiceProxy(TASK2_SRV, task2_srv)
                 task2_resp = predict_and_pick()
