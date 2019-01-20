@@ -71,7 +71,7 @@ class pick_node(object):
 
 					self.home_4()
 					rospy.sleep(2)
-					grip_data.data = 0.5
+					grip_data.data = 0.0
 					self.pub_gripper.publish(grip_data)
 
 					
