@@ -91,7 +91,7 @@ class task1_1(object):
 		self.rectangle = 0
 		self.circle = 0
 		self.MAXAREA = 10000
-		self.MINAREA = 100
+		self.MINAREA = 200
 		self.h, self.w = 480, 640
 		self.mask1 = np.zeros((self.h, self.w))
 
@@ -156,9 +156,11 @@ class task1_1(object):
 
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1")
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(img2, "bgr8")
-		cv2.imwrite("/hostname/Desktop/output.jpg", img2)
-		cv2.imwrite("/hostname/Desktop/mask.jpg", mask2)
+		self.mask1[self.mask1 != 0] += 200
+		cv2.imwrite("/hosthome/Desktop/output.jpg", img2)
+		cv2.imwrite("/hosthome/Desktop/mask.jpg", self.mask1)
 		print("circle", self.circle, "rectangle ", self.rectangle, "square ", self.square)
+
 	def adj(self, _img, _level = 8):
 		colomn, row = self.h, self.w
 		_count = 0
