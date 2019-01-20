@@ -100,8 +100,8 @@ class final_round_node():
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
                 rospy.wait_for_service(NAVIGATION_SRV, timeout=10)
-                self.fsm_transit(1)
-
+                self.fsm_transit(2)
+                print 'skipppppppppppp state 1'
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
                 self.fsm_transit(99)
@@ -156,7 +156,8 @@ class final_round_node():
                 str1 = task2_resp.tag_id
                 if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
                     self.target_tag = int(task2_resp.tag_id)
-                    self.fsm_transit(4)
+                    self.fsm_transit(5)
+                    print 'skipppppppppppp state 4'
                 else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -182,7 +183,7 @@ class final_round_node():
                 rospy.wait_for_service(GRIP_PLACE_SRV, timeout=3)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
                 task4_resp = place(self.target_tag)
-                ret_str = task4_resp.result
+                str1 = task4_resp.result
                 if str1.find('Successful') == -1:
                     rospy.logerr(str1)
                     '''
