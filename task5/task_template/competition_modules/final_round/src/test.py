@@ -110,21 +110,26 @@ class final_round_node():
         if self.fsm_state == 1:
             print 'Finding tag 5'
             # Check whether tag 5 is in sight?
-            self.target_tag = 5
-            stat = rospy.wait_for_message("/odom", Odometry)
-            theta = stat.twist.twist.angular.z  
-            
-            if self.tag_detection(self.target_tag) == False:
-                cmd = Twist()
-                cmd.angular.z = theta/abs(theta) * 0.1
-                self.pub_cmd.publish(cmd)
-                rospy.logerr('Tag%2d is not in sight!' % self, target_id)
-            else:
-                print 'got tag 5'
-                cmd = Twist()
-                cmd.angular.z = 0
-                self.pub_cmd.publish(cmd)
-                self.fsm_transit(2)
+            try:
+                self.target_tag = 5
+                stat = rospy.wait_for_message("/odom", Odometry, timeout=3)
+                theta = stat.twist.twist.angular.z  
+                
+                if self.tag_detection(self.target_tag) == False:
+                    cmd = Twist()
+                    cmd.angular.z = theta/abs(theta) * 0.1
+                    self.pub_cmd.publish(cmd)
+                    rospy.logerr('Tag%2d is not in sight!' % self, target_id)
+                else:
+                    print 'got tag 5'
+                    cmd = Twist()
+                    cmd.angular.z = 0
+                    self.pub_cmd.publish(cmd)
+                    self.fsm_transit(2)
+
+            except (rospy.ServiceException, rospy.ROSException), e:
+                rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
+                self.fsm_transit(99)        
 
 
         if self.fsm_state == 2:
@@ -142,7 +147,7 @@ class final_round_node():
         if self.fsm_state == 3:
             print 'predicting and picking the object'
             try:
-                rospy.wait_for_service(TASK2_SRV)
+                rospy.wait_for_service(TASK2_SRV, timeout=10)
                 predict_and_pick = rospy.ServiceProxy(TASK2_SRV, task2_srv)
                 task2_resp = predict_and_pick()
                 str1 = task2_resp.tag_id
@@ -159,7 +164,7 @@ class final_round_node():
         if self.fsm_state == 4:
             print 'Moving to target tag'
             try:
-                rospy.wait_for_service(NAVIGATION_SRV)
+                rospy.wait_for_service(NAVIGATION_SRV, timeout=3)
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
                 task3_resp = car_move(self.target_tag)
                 self.fsm_transit(5)
@@ -172,7 +177,7 @@ class final_round_node():
         if self.fsm_state == 5:
             print 'Placing the object'
             try:
-                rospy.wait_for_service(GRIP_PLACE_SRV)
+                rospy.wait_for_service(GRIP_PLACE_SRV, timeout=3)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
                 task4_resp = place(self.target_tag)
                 ret_str = task4_resp.result
