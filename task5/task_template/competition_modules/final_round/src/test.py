@@ -109,7 +109,10 @@ class final_round_node():
 
         if self.fsm_state == 1:
             print 'Finding tag 5'
+            print 'Guess find tag 5'
             # Check whether tag 5 is in sight?
+            self.fsm_transit(2)
+            '''
             try:
                 self.target_tag = 5
                 stat = rospy.wait_for_message("odom", Odometry, timeout=3)
@@ -130,7 +133,7 @@ class final_round_node():
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
-                self.fsm_transit(99)        
+                self.fsm_transit(99)'''        
 
 
         if self.fsm_state == 2:
@@ -156,8 +159,8 @@ class final_round_node():
                 str1 = task2_resp.tag_id
                 if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
                     self.target_tag = int(task2_resp.tag_id)
-                    self.fsm_transit(5)
-                    print 'skipppppppppppp state 4'
+                    print 'Got tag %d' % self.target_tag
+                    self.fsm_transit(4)
                 else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -165,6 +168,10 @@ class final_round_node():
 
 
         if self.fsm_state == 4:
+            self.fsm_transit(99)
+            print 'Stop!!!!! '
+            return
+
             print 'Moving to target tag %d' % self.target_tag
             try:
                 rospy.wait_for_service(NAVIGATION_SRV, timeout=3)
@@ -178,7 +185,7 @@ class final_round_node():
 
 
         if self.fsm_state == 5:
-            print 'Placing the object'
+            print 'Placing the object to box %d' % self.target_tag
             try:
                 rospy.wait_for_service(GRIP_PLACE_SRV, timeout=3)
                 place = rospy.ServiceProxy(GRIP_PLACE_SRV, tag)
@@ -193,8 +200,12 @@ class final_round_node():
                     return
                 rospy.loginfo(str1)
                 self.num_obj = self.num_obj - 1
-                self.fsm_transit(1)
-                print 'skipppppppppppp state 6'
+                
+                self.fsm_transit(99)
+                print 'Stop!!!!! '
+                return
+                # self.fsm_transit(1)
+                # print 'skipppppppppppp state 6'
 
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
