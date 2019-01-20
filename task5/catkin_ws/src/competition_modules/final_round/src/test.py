@@ -51,10 +51,9 @@ class final_round_node():
         self.target_tag = 5 # face to object platform
         self.num_obj = 3 
         self.fsm_state = 0
-
         self.motion_trigger = False
 
-        # self.timer = rospy.Timer(rospy.Duration(1), self.process)
+
     def set_state_cb(self, req):
         # Set FSM's state 
         if self.fsm_state != req.data:
@@ -66,7 +65,7 @@ class final_round_node():
 
     def final_trigger_cb(self, req):
         # Start and Stop FSM
-        self.motion_trigger = not self.motion_trigger
+        self.motion_trigger = not (self.motion_trigger)
         if self.motion_trigger == True:
             rospy.loginfo('Final Task state:%2d Run' % self.fsm_state)
         else: rospy.loginfo('Final Task state:%2d Stop' % self.fsm_state)
@@ -101,7 +100,6 @@ class final_round_node():
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
                 rospy.wait_for_service(NAVIGATION_SRV)
-                print 'go to state 2' #######################3
                 self.fsm_transit(1)
 
             except (rospy.ServiceException, rospy.ROSException), e:
@@ -110,6 +108,7 @@ class final_round_node():
 
 
         if self.fsm_state == 1:
+            print 'Finding tag 5'
             # Check whether tag 5 is in sight?
             self.target_tag = 5
             stat = rospy.wait_for_message("/odom", Odometry)
@@ -210,8 +209,9 @@ class final_round_node():
         if self.fsm_state == 88:
             rospy.loginfo('Finish the tasks!')
             self.timer.shutdown()
-            exit(-1)               
-        else:                  # Error state
+            exit(-1)
+
+        if self.fsm_state == 99:                  # Error state
             print('Node error')
             rospy.sleep(5)
 
