@@ -80,6 +80,13 @@ class Parking(object):
 			print "th_diff:", th_diff
 			# Heading not in threshold
 			if abs(th_diff) > self.head_thres:
+				if abs(th_diff) > 2*pi/3: #120 degree, move backward so won't collide with platform when rotating
+					cmd = Twist()
+					cmd.linear.x = -self.v_thres
+					self.pub_cmd.publish(cmd)
+					rospy.sleep(3)
+					cmd = Twist()
+					self.pub_cmd.publish(cmd)
 				time = abs(th_diff) / self.w_thres
 				cmd = Twist()
 				print "Rotate %f seconds" %(time)
