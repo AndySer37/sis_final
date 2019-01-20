@@ -23,7 +23,7 @@ from object_detection.srv import task1out
 from pose_estimate_and_pick.srv import task2_srv
 from place_to_box.srv import home, tag
 from std_srvs.srv import *
-from final_round import *
+from final_round.srv import *
 
 # Available service name
 NAVIGATION_SRV  = 'robot_navigate'
