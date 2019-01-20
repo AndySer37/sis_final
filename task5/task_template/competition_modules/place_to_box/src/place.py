@@ -49,9 +49,9 @@ class place_node(object):
 
 		pose_goal = geometry_msgs.msg.Pose()
 	
-		pose_goal.position.x = trans[2] - 0.21
+		pose_goal.position.x = trans[2] - 0.22
 		pose_goal.position.y = - trans[0]
-		pose_goal.position.z = trans[1] + 0.02
+		pose_goal.position.z = trans[1] + 0.01
 		x1 = pose_goal.position.x
 
 		print "Your box's position : " , pose_goal.position
@@ -65,9 +65,9 @@ class place_node(object):
 		# 	elif -0.15 <= pose_goal.position.y <= 0.165:
 		# 		return tagResponse("Cannot arrive")
 
-		for l in range(8):
+		for l in range(6):
 			pose_goal.position.x = x1
-			for i in range(4):
+			for i in range(5):
 				degree = -90
 				for j in range(90):
 					joint_value = ik_4dof.ik_solver(pose_goal.position.x, pose_goal.position.y, pose_goal.position.z, degree)
