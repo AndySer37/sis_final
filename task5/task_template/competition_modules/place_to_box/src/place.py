@@ -124,7 +124,7 @@ class place_node(object):
 		rospy.sleep(1)
 		rospy.loginfo("End process")
 	def open(self, req):
-		self.grip_data.data = 0.5
+		self.grip_data.data = 0.2
 		self.pub_gripper.publish(self.grip_data)
 		rospy.loginfo("Open gripper")
 		return homeResponse("Open gripper")	
