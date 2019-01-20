@@ -156,9 +156,9 @@ class task1_1(object):
 
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1")
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(img2, "bgr8")
-		mask1[mask1 != 0] += 200
+		self.mask1[self.mask1 != 0] += 200
 		cv2.imwrite("/hosthome/Desktop/output.jpg", img2)
-		cv2.imwrite("/hosthome/Desktop/mask.jpg", mask1)
+		cv2.imwrite("/hosthome/Desktop/mask.jpg", self.mask1)
 		print("circle", self.circle, "rectangle ", self.rectangle, "square ", self.square)
 
 	def adj(self, _img, _level = 8):
