@@ -99,7 +99,7 @@ class final_round_node():
         if self.fsm_state == 0:
             print 'Robot Initialization'
             try:    # Wait for rosservice ready
-                rospy.wait_for_service(NAVIGATION_SRV)
+                rospy.wait_for_service(NAVIGATION_SRV, timeout=10)
                 self.fsm_transit(1)
 
             except (rospy.ServiceException, rospy.ROSException), e:
@@ -121,7 +121,7 @@ class final_round_node():
                     self.pub_cmd.publish(cmd)
                     rospy.logerr('Tag%2d is not in sight!' % self, target_id)
                 else:
-                    print 'got tag 5'
+                    print 'Got tag 5'
                     cmd = Twist()
                     cmd.angular.z = 0
                     self.pub_cmd.publish(cmd)
@@ -153,8 +153,7 @@ class final_round_node():
                 str1 = task2_resp.tag_id
                 if str1.find('Fail') == -1: # if task2 success, get the id related the picked obj
                     self.target_tag = int(task2_resp.tag_id)
-                    self.fsm_transit(5)######4)
-                    print 'skipppppppppppp state 4'
+                    self.fsm_transit(4)
                 else: rospy.sleep(3)
             except (rospy.ServiceException, rospy.ROSException), e:
                 rospy.logerr('State:%2d, error: %s' % (self.fsm_state, e))
@@ -162,7 +161,7 @@ class final_round_node():
 
 
         if self.fsm_state == 4:
-            print 'Moving to target tag'
+            print 'Moving to target tag %d' % self.target_tag
             try:
                 rospy.wait_for_service(NAVIGATION_SRV, timeout=3)
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
@@ -199,7 +198,7 @@ class final_round_node():
 
 
         if self.fsm_state == 6:
-            print 'Way home'
+            print 'Way home tag %d' % self.target_tag
             try:
                 self.target_tag = 5
                 car_move = rospy.ServiceProxy(NAVIGATION_SRV, robot_navigation)
