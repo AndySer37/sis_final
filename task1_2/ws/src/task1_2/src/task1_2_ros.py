@@ -124,7 +124,7 @@ class task1_2(object):
 		self.means = np.array([103.939, 116.779, 123.68]) / 255. # mean of three channels in the order of BGR
 		self.h, self.w  = 480, 640
 		self.n_class = 4
-		model_dir = "/home/andyser/code/sis/sis_final/task1_2/models"   # 
+		model_dir = "/home/sis/sis_competition/task1_2/ws/src/task1_2/models"   # 
 		model_name = "sis_99epoch.pkl"
 		self.vgg_model = VGGNet(self.cfg, requires_grad=True, remove_fc=True)
 		self.fcn_model = FCN16s(pretrained_net=self.vgg_model, n_class=self.n_class)
@@ -151,7 +151,7 @@ class task1_2(object):
 
 	def prediction_cb(self, req):
 		resp = task1outResponse()
-		im_msg = rospy.wait_for_message('/camera/rgb/image_rect_color', Image, timeout=None)
+		im_msg = rospy.wait_for_message('/camera/color/image_rect_color', Image, timeout=None)
 		resp.pc = rospy.wait_for_message('/camera/depth_registered/points', PointCloud2, timeout=None)
 		rospy.loginfo("Get image.")
 		resp.org_image = im_msg
@@ -219,7 +219,7 @@ class task1_2(object):
 						mask2[labels == p] = i
 						count[i - 1] += 1
 		rospy.loginfo("Image processing time : %f", rospy.get_time() - now)
-		cv2.imwrite("/home/andyser/Desktop/res.jpg", show_img)
+		cv2.imwrite("/home/sis/sis_competition/res.jpg", show_img)
 		resp.process_image = self.cv_bridge.cv2_to_imgmsg(show_img, "bgr8")
 		resp.mask = self.cv_bridge.cv2_to_imgmsg(mask2, "64FC1") 
 		print(count)
